@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">fota</string>
+
+    <string name="confirm">确定</string>
+    <string name="agree">同意</string>
+    <string name="disagree">不同意</string>
+    <string name="update_condition">检测升级条件…</string>
+    <string name="downloading">下载中…</string>
+    <string name="installing">软件更新中，请勿进行任何操作!</string>
+    <string name="cancel_download_content">是否退出下载?</string>
+    <string name="cancel_download">退出下载</string>
+    <string name="continue_download">继续下载</string>
+    <string name="update_note_title">条款与说明</string>
+    <string name="no_power">蓄电池电量不足，请充满电后重试</string>
+    <string name="update_cancel">取消升级</string>
+    <string name="update_now">现在升级</string>
+    <string name="update_warning">升级条件不满足，请根据上述条件调整车辆状态</string>
+    <string name="update_schedule">预定时间</string>
+    <string name="check_version_title">软件升级</string>
+    <string name="check_version_content">检测到新软件版本\n您可以预定时间或者现在升级</string>
+
+    <string name="update_warning_title">提示</string>
+    <string name="update_warning_content1">本次升级大约需要</string>
+    <string name="update_warning_content2">分钟，您是否现在升级?</string>
+    <string name="update_warning_content3">升级过程中可能会出现车辆自动熄火重启的情况，请您耐心等候!</string>
+    <string name="update_later">下次再说</string>
+
+    <string name="update_success">升级成功，系统自动重启</string>
+    <string name="update_failed">升级失败，请重新升级</string>
+
+    <string name="update_error_title">错误</string>
+    <string name="update_error_content">请勿驾驶车辆，联系4S店处理!</string>
+    
+    <string name="setting_update_time">设置升级时间</string>
+    <string name="setting_update_start_time">设置开始时间</string>
+    <string name="setting_update_warning">升级过程中请保持车辆熄火，档位处于&#034;驻车&#034;模式，手刹为拉起状态。</string>
+    <string name="setting_update_warning2">您可以选择不用车的时间段，系统会自动为您完成升级，升级过程，系统会保护车辆的安访状态，请放心锁车离开。</string>
+    <string name="setting_update_des">时间内自动升级</string>
+    <string name="setting_update_btn">设置此时间</string>
+
+    <string name="condition_isIgniteAccOn">点火开关on</string>
+    <string name="condition_isSpeedZero">车速为0</string>
+    <string name="condition_isParkBrake">档位为N档</string>
+    <string name="condition_isGearPark">EPB电子手刹拉起</string>
+    <string name="condition_isEngineOff">发动机转速&#060;1000r/min</string>
+    <string name="condition_isBatteryOk">电量充足</string>
+</resources>

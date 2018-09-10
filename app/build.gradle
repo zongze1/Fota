@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    defaultConfig {
+        applicationId "com.coagent.jac.s7.fota"
+        buildToolsVersion "23.0.3"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile files('libs/iov_lib.jar')
+    compile files('libs/coagentproxy.jar')
+    compile files('libs/constraint-layout.jar')
+    compile(name: 'constraint-layout', ext: 'aar')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.google.android:flexbox:1.0.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.42'
+}

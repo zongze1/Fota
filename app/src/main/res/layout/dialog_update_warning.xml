@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1430px"
+    android:layout_height="600px"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:theme="@style/UpdateDialogTheme"
+    android:background="@drawable/dialog_update_notitle">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100px"
+        android:text="@string/update_warning_title"
+        android:textSize="34px"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom|center_horizontal"
+        android:layout_marginTop="60px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_warning_content1"
+            android:textColor="@android:color/white"
+            android:textSize="34px" />
+
+        <TextView
+            android:id="@+id/dialog_update_warning_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="30"
+            android:textColor="#0054ff"
+            android:textSize="42px"
+            android:layout_marginLeft="16px"
+            android:layout_marginRight="16px"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_warning_content2"
+            android:textColor="@android:color/white"
+            android:textSize="34px" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/update_warning_content3"
+        android:layout_marginTop="32px"
+        android:textSize="30px"
+        android:textColor="@android:color/white"
+        android:gravity="bottom|center_horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="128px"
+        android:background="@android:color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom|center_horizontal" >
+
+        <Button
+            android:id="@+id/dialog_update_warning_btn1"
+            android:layout_width="260px"
+            android:layout_height="80px"
+            android:textSize="30px"
+            android:text="@string/update_now"
+            android:background="@drawable/selector_button" />
+
+        <Button
+            android:id="@+id/dialog_update_warning_btn2"
+            android:layout_width="260px"
+            android:layout_height="80px"
+            android:textSize="30px"
+            android:layout_marginLeft="280px"
+            android:text="@string/update_later"
+            android:background="@drawable/selector_button" />
+    </LinearLayout>
+</LinearLayout>
