@@ -3,6 +3,7 @@ package com.coagent.jac.s7.fota.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ public class UpdateNoteDialog extends BaseDialog implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_update_note);
+        window.setLayout(1550, 600);
+        window.setGravity(Gravity.TOP|Gravity.CENTER_VERTICAL);
         setCancelable(false);
         contentTv = (TextView) findViewById(R.id.dialog_update_note_content);
         agreeBtn = (Button) findViewById(R.id.dialog_update_note_positive_btn);

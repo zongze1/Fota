@@ -3,6 +3,7 @@ package com.coagent.jac.s7.fota.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,6 +40,9 @@ public class UpdateScheduleDialog extends BaseDialog implements TimePicker.OnTim
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_update_schedule);
+        setCancelable(false);
+        window.setLayout(1550, 600);
+        window.setGravity(Gravity.TOP|Gravity.CENTER_VERTICAL);
         timePicker = (TimePicker) findViewById(R.id.dialog_update_schedule_time_picker);
         timeTv = (TextView) findViewById(R.id.dialog_update_schedule_time);
         button = (Button) findViewById(R.id.dialog_update_schedule_btn);

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     defaultConfig {
         applicationId "com.coagent.jac.s7.fota"
-        buildToolsVersion "23.0.3"
+        buildToolsVersion "25.0.3"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1

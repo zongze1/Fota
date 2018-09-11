@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="750px"
     android:layout_height="390px"
+    android:layout_marginLeft="120px"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/UpdateDialogTheme"
     android:background="@drawable/dialog_update_notitle">
@@ -14,15 +15,15 @@
         android:layout_marginRight="28px"
         android:background="@drawable/selector_delete"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <TextView
         android:id="@+id/dialog_update_message_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="40px"
+        android:textSize="34px"
         android:textColor="@android:color/white"
-        android:layout_marginTop="50px"
+        android:layout_marginTop="40px"
         android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,9 +33,9 @@
         android:id="@+id/dialog_update_message_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="40px"
+        android:textSize="34px"
         android:textColor="@android:color/white"
-        android:layout_marginTop="45px"
+        android:layout_marginTop="40px"
         android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -55,15 +56,19 @@
             android:id="@+id/dialog_update_message_positive_btn"
             android:layout_width="200px"
             android:layout_height="80px"
-            android:textSize="36px"
+            android:textSize="32px"
+            android:textColor="#21365e"
             android:layout_marginRight="90px"
+            android:background="@drawable/selector_button"
             android:text="@string/update_now"/>
 
         <Button
             android:id="@+id/dialog_update_message_negative_btn"
             android:layout_width="200px"
             android:layout_height="80px"
-            android:textSize="36px"
+            android:textSize="32px"
+            android:textColor="#21365e"
+            android:background="@drawable/selector_button"
             android:text="@string/update_schedule"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

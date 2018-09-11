@@ -44,4 +44,5 @@
     <string name="condition_isGearPark">EPB电子手刹拉起</string>
     <string name="condition_isEngineOff">发动机转速&#060;1000r/min</string>
     <string name="condition_isBatteryOk">电量充足</string>
+    <string name="check_version">checkVersion</string>
 </resources>

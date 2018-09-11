@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,6 +43,8 @@ public class UpdateWarningDialog extends BaseDialog implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_update_warning);
+        window.setLayout(1550, 600);
+        window.setGravity(Gravity.TOP|Gravity.CENTER_VERTICAL);
 
         timeTv = (TextView) findViewById(R.id.dialog_update_warning_time);
         updateBtn = (Button) findViewById(R.id.dialog_update_warning_btn1);

@@ -1,5 +1,7 @@
 package com.coagent.jac.s7.fota;
 
+import android.content.Context;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -17,6 +19,12 @@ import java.util.zip.ZipFile;
 
 public class Utils {
     private static final int BUFFER_LEN = 8192;
+    public static Context context;
+
+    public static void init(Context context) {
+        Utils.context = context;
+    }
+
     public static boolean copyFile(final String srcFilePath,
                                    final String destFilePath) {
         return copyFile(getFileByPath(srcFilePath), getFileByPath(destFilePath));

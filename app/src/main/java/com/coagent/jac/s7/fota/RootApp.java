@@ -6,6 +6,6 @@ public class RootApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SPUtils.init(this);
+        Utils.init(this);
     }
 }

@@ -11,12 +11,7 @@ import java.util.Set;
 
 public final class SPUtils {
     private static final SimpleArrayMap<String, SPUtils> SP_UTILS_MAP = new SimpleArrayMap<String, SPUtils>();
-    private static Context context;
     private SharedPreferences sp;
-
-    public static void init(Context context) {
-        SPUtils.context = context;
-    }
 
     /**
      * Return the single {@link SPUtils} instance
@@ -65,11 +60,11 @@ public final class SPUtils {
     }
 
     private SPUtils(final String spName) {
-        sp = context.getSharedPreferences(spName, Context.MODE_PRIVATE);
+        sp = Utils.context.getSharedPreferences(spName, Context.MODE_PRIVATE);
     }
 
     private SPUtils(final String spName, final int mode) {
-        sp = context.getSharedPreferences(spName, mode);
+        sp = Utils.context.getSharedPreferences(spName, mode);
     }
 
     /**

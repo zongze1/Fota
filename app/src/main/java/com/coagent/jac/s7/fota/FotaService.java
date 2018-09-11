@@ -3,10 +3,10 @@ package com.coagent.jac.s7.fota;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.abupdate.iov.Constant.EcuId;
 import com.abupdate.iov.event.info.DownloadInfo;
@@ -21,6 +21,7 @@ import com.abupdate.iov.task.FotaTask;
 import com.abupdate.iov.task.GlobalInter;
 import com.abupdate.iov.task.Sysi;
 import com.coagent.jac.s7.fota.Dialog.ConditionDialog;
+import com.coagent.jac.s7.fota.Dialog.LoadingDialog;
 import com.coagent.jac.s7.fota.Dialog.MessageDialog;
 import com.coagent.jac.s7.fota.Dialog.ProgressDialog;
 import com.coagent.jac.s7.fota.Dialog.ProgressListener;
@@ -33,14 +34,20 @@ import com.coagent.proxy.update.UpdateManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 由于各个对话框之间相互耦合，暂时未作优化
  */
 public class FotaService extends Service {
+    private static final String TAG = "FotaService";
+
     private static final String ARG_TYPE = "arg_type";
     /**
      * 记录升级的id，当收到新版本通知时保存任务id到本地
@@ -61,6 +68,7 @@ public class FotaService extends Service {
     private UpdateWarningDialog warningDialog;
     // 升级前条件检测对话框
     private ConditionDialog conditionDialog;
+    private LoadingDialog loadingDialog;
 
     private Handler handler = new Handler();
 
@@ -68,7 +76,7 @@ public class FotaService extends Service {
      * 启动升级服务
      *
      * @param type 0 => 正常启动，启动后不执行任何操作
-     *             1 => 启动后执行安装操作
+     *             1 => 启动后执行checkVersion
      */
     public static Intent newInstance(Context context, int type) {
         Intent intent = new Intent(context, FotaService.class);
@@ -82,15 +90,17 @@ public class FotaService extends Service {
         FotaTask.instance().create(sysi, sessionCallback);
         FotaTask.instance().registerListener(globalInter);
         UpdateManager.getInstance().addUpdateListener(updateListener);
+    }
 
-        VersionInfo info = new VersionInfo();
-        info.taskId = "1";
-        info.packageSize = 2688;
-        info.upgradeType = 1;
-        info.fromTime = "2018-9-7";
-        info.toTime = "2018-9-9";
-        info.releaseNote = "测试";
-        globalInter.onNewVersion(info);
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        int type = intent.getIntExtra(ARG_TYPE, 0);
+        if (type == 1) {
+            createLoadingDialog();
+            loadingDialog.show();
+            FotaTask.instance().checkVersion();
+        }
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -189,46 +199,71 @@ public class FotaService extends Service {
         }
     }
 
+    private void createLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(this);
+        } else {
+            loadingDialog.dismiss();
+        }
+    }
+
     private GlobalInter globalInter = new GlobalInter() {
         @Override
-        public void onNewVersion(VersionInfo versionInfo) {
-            String dstVer = SPUtils.getInstance().getString(SP_UPDATE_TASK_ID);
-            if (dstVer.equals(versionInfo.taskId)) {
-                return;
-            }
+        public void onNewVersion(final VersionInfo versionInfo) {
+//            String dstVer = SPUtils.getInstance().getString(SP_UPDATE_TASK_ID);
+//            if (dstVer.equals(versionInfo.taskId)) {
+//                return;
+//            }
 
-            // 收到新版本提示
-            createMessageDialog();
-            messageDialog.setCanceledOnTouchOutside(false);
-            messageDialog.setTitle(getString(R.string.check_version_title))
-                    .setContent(getString(R.string.check_version_content))
-                    .setButtonCount(2)
-                    .setPositiveText(getString(R.string.update_now))
-                    .setNegativeText(getString(R.string.update_schedule))
-                    .setListener(newVersionListener)
-                    .show();
-            // 预先填充条款对话框的说明
-            createNoteDialog();
-            noteDialog.setContent(versionInfo.releaseNote);
+            Log.d(TAG, "条款与说明: " + versionInfo.releaseNote);
+            loadingDialog.dismiss();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // 收到新版本提示
+                    createMessageDialog();
+                    messageDialog.setCanceledOnTouchOutside(false);
+                    messageDialog.setTitle(getString(R.string.check_version_title))
+                            .setContent(getString(R.string.check_version_content))
+                            .setButtonCount(2)
+                            .setPositiveText(getString(R.string.update_now))
+                            .setNegativeText(getString(R.string.update_schedule))
+                            .setListener(newVersionListener)
+                            .show();
+                    // 预先填充条款对话框的说明
+                    createNoteDialog();
+                    noteDialog.setContent(versionInfo.releaseNote);
+                }
+            });
             SPUtils.getInstance().put(SP_UPDATE_TASK_ID, versionInfo.taskId);
         }
 
         private UpdateDialogListener newVersionListener = new UpdateDialogListener() {
             @Override
             public void onPositiveClick() {
-                // 点击"现在升级"按钮
-                // 启动下载对话框
                 messageDialog.dismiss();
-                noteDialog.setListener(activeListener)
-                        .show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 点击"现在升级"按钮
+                        // 启动下载对话框
+                        noteDialog.setListener(activeListener)
+                                .show();
+                    }
+                });
             }
 
             @Override
             public void onNegativeClick() {
-                // 点击"预定时间"按钮
                 messageDialog.dismiss();
-                noteDialog.setListener(silentListener)
-                        .show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 点击"预定时间"按钮
+                        noteDialog.setListener(silentListener)
+                                .show();
+                    }
+                });
             }
         };
 
@@ -236,12 +271,17 @@ public class FotaService extends Service {
         private UpdateDialogListener activeListener = new UpdateDialogListener() {
             @Override
             public void onPositiveClick() {
-                // 同意条款则开始下载升级包
                 noteDialog.dismiss();
-                createProgressDialog();
-                progressDialog.setTitle(getString(R.string.downloading))
-                        .setListener(progressListener)
-                        .show();
+                // 同意条款则开始下载升级包
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        createProgressDialog();
+                        progressDialog.setTitle(getString(R.string.downloading))
+                                .setListener(progressListener)
+                                .show();
+                    }
+                });
                 FotaTask.instance().download();
             }
 
@@ -256,10 +296,16 @@ public class FotaService extends Service {
         private UpdateDialogListener silentListener = new UpdateDialogListener() {
             @Override
             public void onPositiveClick() {
-                // 同意条款则打开计划时间设置对话框
-                createScheduleDialog();
-                scheduleDialog.setListener(scheduleListener)
-                        .show();
+                noteDialog.dismiss();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 同意条款则打开计划时间设置对话框
+                        createScheduleDialog();
+                        scheduleDialog.setListener(scheduleListener)
+                                .show();
+                    }
+                });
             }
 
             @Override
@@ -281,34 +327,49 @@ public class FotaService extends Service {
         private ProgressListener progressListener = new ProgressListener() {
             @Override
             public void onCancel() {
-                createMessageDialog();
-                // 更新信息对话框的内容并显示
-                messageDialog.setTitle("")
-                        .setContent(getString(R.string.cancel_download_content))
-                        .setPositiveText(getString(R.string.cancel_download))
-                        .setNegativeText(getString(R.string.continue_download))
-                        .setListener(cancelDownloadListener)
-                        .show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        createMessageDialog();
+                        // 更新信息对话框的内容并显示
+                        messageDialog.setTitle("")
+                                .setContent(getString(R.string.cancel_download_content))
+                                .setPositiveText(getString(R.string.cancel_download))
+                                .setNegativeText(getString(R.string.continue_download))
+                                .setListener(cancelDownloadListener)
+                                .show();
+                    }
+                });
             }
 
             @Override
             public void onComplete() {
-                // 下载完成，弹出安装前提示
                 progressDialog.dismiss();
-                createUpdateWarningDialog();
-                warningDialog.setListener(downloadCompleteListener)
-                        .show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 下载完成，弹出安装前提示
+                        createUpdateWarningDialog();
+                        warningDialog.setListener(downloadCompleteListener)
+                                .show();
+                    }
+                });
             }
         };
 
         private UpdateDialogListener cancelDownloadListener = new UpdateDialogListener() {
             @Override
             public void onPositiveClick() {
+                messageDialog.dismiss();
                 // 退出下载，隐藏信息对话框及进度对话框
                 FotaTask.instance().downloadCancel();
-                messageDialog.dismiss();
-                progressDialog.setProgress(0)
-                        .dismiss();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.setProgress(0)
+                                .dismiss();
+                    }
+                });
             }
 
             @Override
@@ -322,11 +383,17 @@ public class FotaService extends Service {
             @Override
             public void onPositiveClick() {
                 warningDialog.dismiss();
-                // 点击"现在升级"按钮
-                // 通知fota检测车机是否符合安装条件
-                createConditionDialog();
-                conditionDialog.setListener(checkConditionListener)
-                        .show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "download complete, check condition");
+                        // 点击"现在升级"按钮
+                        // 通知fota检测车机是否符合安装条件
+                        createConditionDialog();
+                        conditionDialog.setListener(checkConditionListener)
+                                .show();
+                    }
+                });
                 FotaTask.instance().install();
             }
 
@@ -338,28 +405,38 @@ public class FotaService extends Service {
         };
 
         @Override
-        public void onDownloadProgress(DownloadInfo downloadInfo) {
-            if (!progressDialog.isShowing()) {
-                return;
-            }
-            float progress;
-            progress = downloadInfo.currentNum / downloadInfo.countNum;
-            progress *= downloadInfo.nowBytes / downloadInfo.totalBytes;
-            progressDialog.setProgress(progress);
+        public void onDownloadProgress(final DownloadInfo downloadInfo) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (!progressDialog.isShowing()) {
+                        return;
+                    }
+                    float progress;
+                    progress = downloadInfo.currentNum / (float) downloadInfo.countNum;
+                    progress *= downloadInfo.nowBytes / (float) downloadInfo.totalBytes;
+                    progressDialog.setProgress(progress);
+                }
+            });
         }
 
         @Override
         public void onInstallCondition(InstallCondition installCondition) {
+            conditionDialog.dismiss();
             // 先检测电量，若不通过，显示错误信息框
             if (!installCondition.isBatteryOk) {
-                conditionDialog.dismiss();
-                createMessageDialog();
-                messageDialog.setTitle("")
-                        .setContent(getString(R.string.no_power))
-                        .setButtonCount(1)
-                        .setNegativeText(getString(R.string.confirm))
-                        .setListener(messageDialogListener)
-                        .show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        createMessageDialog();
+                        messageDialog.setTitle("")
+                                .setContent(getString(R.string.no_power))
+                                .setButtonCount(1)
+                                .setNegativeText(getString(R.string.confirm))
+                                .setListener(messageDialogListener)
+                                .show();
+                    }
+                });
                 return;
             }
 
@@ -374,10 +451,15 @@ public class FotaService extends Service {
         private UpdateDialogListener checkConditionListener = new UpdateDialogListener() {
             @Override
             public void onPositiveClick() {
-                // 显示安装进度条
-                createProgressDialog();
-                progressDialog.setTitle(getString(R.string.installing))
-                        .show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 显示安装进度条
+                        createProgressDialog();
+                        progressDialog.setTitle(getString(R.string.installing))
+                                .show();
+                    }
+                });
             }
 
             @Override
@@ -398,14 +480,20 @@ public class FotaService extends Service {
         }
 
         @Override
-        public void onError(ErrorInfo errorInfo) {
-            createMessageDialog();
-            messageDialog.setTitle("")
-                    .setContent(errorInfo.desc)
-                    .setButtonCount(1)
-                    .setNegativeText(getString(R.string.confirm))
-                    .setListener(messageDialogListener)
-                    .show();
+        public void onError(final ErrorInfo errorInfo) {
+            Log.d(TAG, "something error" + String.valueOf(errorInfo.errCode));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    createMessageDialog();
+                    messageDialog.setTitle("")
+                            .setContent(errorInfo.desc)
+                            .setButtonCount(1)
+                            .setNegativeText(getString(R.string.confirm))
+                            .setListener(messageDialogListener)
+                            .show();
+                }
+            });
         }
 
         private UpdateDialogListener messageDialogListener = new UpdateDialogListener() {
@@ -437,7 +525,7 @@ public class FotaService extends Service {
         // 软件版本
         @Override
         public String getSoftwareVersion(EcuId.EcuEnum ecuEnum) {
-            return "V8_JAC_S7_V1.08";
+            return "V8_JAC_S7_V1.07";
         }
 
         // 目标目录的空间
@@ -457,7 +545,7 @@ public class FotaService extends Service {
         // 硬件序列号
         @Override
         public String getHardwareSerialNumber(EcuId.EcuEnum ecuEnum) {
-            return Build.SERIAL;
+            return "65462315";
         }
 
         // 供应商编码
@@ -469,7 +557,8 @@ public class FotaService extends Service {
         // 生产日期
         @Override
         public String getProductionDate(EcuId.EcuEnum ecuEnum) {
-            return "20180821";
+            DateFormat format = new SimpleDateFormat("yyyyMM", Locale.CHINA);
+            return format.format(new Date());
         }
 
         @Override

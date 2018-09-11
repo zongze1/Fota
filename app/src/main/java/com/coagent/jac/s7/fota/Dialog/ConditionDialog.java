@@ -1,12 +1,13 @@
 package com.coagent.jac.s7.fota.Dialog;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abupdate.iov.event.info.InstallCondition;
@@ -16,12 +17,12 @@ public class ConditionDialog extends BaseDialog implements View.OnClickListener 
 
     private InstallCondition condition;
 
-    private TextView isIgniteAccOnTv;
-    private TextView isSpeedZeroTv;
-    private TextView isParkBrakeTv;
-    private TextView isGearParkTv;
-    private TextView isEngineOffTv;
-    private TextView isBatteryOkTv;
+    private ImageView isIgniteAccOnTv;
+    private ImageView isSpeedZeroTv;
+    private ImageView isParkBrakeTv;
+    private ImageView isGearParkTv;
+    private ImageView isEngineOffTv;
+    private ImageView isBatteryOkTv;
     private TextView warningTv;
     private Button cancelBtn;
 
@@ -58,15 +59,24 @@ public class ConditionDialog extends BaseDialog implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_update_condition);
+        window.setLayout(1550, 600);
+        window.setGravity(Gravity.TOP|Gravity.CENTER_VERTICAL);
         setCancelable(false);
-        isIgniteAccOnTv = (TextView) findViewById(R.id.dialog_update_condition_isIgniteAccOn);
-        isSpeedZeroTv = (TextView) findViewById(R.id.dialog_update_condition_isSpeedZero);
-        isParkBrakeTv = (TextView) findViewById(R.id.dialog_update_condition_isParkBrake);
-        isGearParkTv = (TextView) findViewById(R.id.dialog_update_condition_isGearPark);
-        isEngineOffTv = (TextView) findViewById(R.id.dialog_update_condition_isEngineOff);
-        isBatteryOkTv = (TextView) findViewById(R.id.dialog_update_condition_isBatteryOk);
+        isIgniteAccOnTv = (ImageView) findViewById(R.id.dialog_update_condition_isIgniteAccOn);
+        isSpeedZeroTv = (ImageView) findViewById(R.id.dialog_update_condition_isSpeedZero);
+        isParkBrakeTv = (ImageView) findViewById(R.id.dialog_update_condition_isParkBrake);
+        isGearParkTv = (ImageView) findViewById(R.id.dialog_update_condition_isGearPark);
+        isEngineOffTv = (ImageView) findViewById(R.id.dialog_update_condition_isEngineOff);
+        isBatteryOkTv = (ImageView) findViewById(R.id.dialog_update_condition_isBatteryOk);
         warningTv = (TextView) findViewById(R.id.dialog_update_condition_warning);
         cancelBtn = (Button) findViewById(R.id.dialog_update_condition_cancel);
+
+        isIgniteAccOnTv.setImageResource(R.drawable.condition_false);
+        isSpeedZeroTv.setImageResource(R.drawable.condition_false);
+        isParkBrakeTv.setImageResource(R.drawable.condition_false);
+        isGearParkTv.setImageResource(R.drawable.condition_false);
+        isEngineOffTv.setImageResource(R.drawable.condition_false);
+
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,35 +88,32 @@ public class ConditionDialog extends BaseDialog implements View.OnClickListener 
 
     @Override
     public void show() {
-        // 显示前把所有图标重置
-        Drawable drawableFalse = getContext().getResources().getDrawable(R.drawable.condition_false);
-        isIgniteAccOnTv.setCompoundDrawablesRelative(drawableFalse, null, null, null);
-        isSpeedZeroTv.setCompoundDrawablesRelative(drawableFalse, null, null, null);
-        isParkBrakeTv.setCompoundDrawablesRelative(drawableFalse, null, null, null);
-        isGearParkTv.setCompoundDrawablesRelative(drawableFalse, null, null, null);
-        isEngineOffTv.setCompoundDrawablesRelative(drawableFalse, null, null, null);
-        handler.postDelayed(showRunnable, 500);
+        if (isIgniteAccOnTv != null) {
+            // 显示前把所有图标重置
+            isIgniteAccOnTv.setImageResource(R.drawable.condition_false);
+            isSpeedZeroTv.setImageResource(R.drawable.condition_false);
+            isParkBrakeTv.setImageResource(R.drawable.condition_false);
+            isGearParkTv.setImageResource(R.drawable.condition_false);
+            isEngineOffTv.setImageResource(R.drawable.condition_false);
+            handler.postDelayed(showRunnable, 500);
+        }
         super.show();
     }
 
     private void setCondition() {
-        Drawable drawable;
-        Drawable drawableTrue = getContext().getResources().getDrawable(R.drawable.condition_true);
-        drawableTrue.setBounds(0, 0, 34, 34);
-        Drawable drawableFalse = getContext().getResources().getDrawable(R.drawable.condition_false);
-        drawableFalse.setBounds(0, 0, 34, 34);
-        drawable = condition.isIgnitAccOn ? drawableTrue : drawableFalse;
-        isIgniteAccOnTv.setCompoundDrawablesRelative(drawable, null, null, null);
-        drawable = condition.isSpeedZero ? drawableTrue : drawableFalse;
-        isSpeedZeroTv.setCompoundDrawablesRelative(drawable, null, null, null);
-        drawable = condition.isParkBrake ? drawableTrue : drawableFalse;
-        isParkBrakeTv.setCompoundDrawablesRelative(drawable, null, null, null);
-        drawable = condition.isGearPark ? drawableTrue : drawableFalse;
-        isGearParkTv.setCompoundDrawablesRelative(drawable, null, null, null);
-        drawable = condition.isEngineOff ? drawableTrue : drawableFalse;
-        isEngineOffTv.setCompoundDrawablesRelative(drawable, null, null, null);
-        drawable = condition.isBatteryOk ? drawableTrue : drawableFalse;
-        isBatteryOkTv.setCompoundDrawablesRelative(drawable, null, null, null);
+        int imgRes;
+        imgRes = condition.isIgnitAccOn ? R.drawable.condition_true : R.drawable.condition_false;
+        isIgniteAccOnTv.setImageResource(imgRes);
+        imgRes = condition.isSpeedZero ? R.drawable.condition_true : R.drawable.condition_false;
+        isSpeedZeroTv.setImageResource(imgRes);
+        imgRes = condition.isParkBrake ? R.drawable.condition_true : R.drawable.condition_false;
+        isParkBrakeTv.setImageResource(imgRes);
+        imgRes = condition.isGearPark ? R.drawable.condition_true : R.drawable.condition_false;
+        isGearParkTv.setImageResource(imgRes);
+        imgRes = condition.isEngineOff ? R.drawable.condition_true : R.drawable.condition_false;
+        isEngineOffTv.setImageResource(imgRes);
+        imgRes = condition.isBatteryOk ? R.drawable.condition_true : R.drawable.condition_false;
+        isBatteryOkTv.setImageResource(imgRes);
 
         if (!condition.isSpeedZero || !condition.isParkBrake || !condition.isIgnitAccOn ||
                 !condition.isGearPark || !condition.isEngineOff || !condition.isBatteryOk) {

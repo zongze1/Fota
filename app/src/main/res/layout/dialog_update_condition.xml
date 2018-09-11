@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="1430px"
     android:layout_height="600px"
+    android:layout_marginLeft="120px"
     android:orientation="vertical"
     android:background="@drawable/dialog_update_notitle"
     android:theme="@style/UpdateDialogTheme">
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100px"
-        android:textSize="40px"
+        android:textSize="34px"
         android:gravity="center_horizontal"
         android:textColor="@android:color/white"
         android:text="@string/update_condition"/>
@@ -22,77 +23,147 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="40px"
-        android:layout_marginLeft="390px"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/dialog_update_condition_isIgniteAccOn"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="30px"
-            android:gravity="start|center_vertical"
-            android:textSize="40px"
-            android:textColor="@android:color/white"
-            android:text="@string/condition_isIgniteAccOn"
-            android:drawableLeft="@drawable/condition_false"/>
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_update_condition_isIgniteAccOn"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
 
-        <TextView
-            android:id="@+id/dialog_update_condition_isSpeedZero"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="30px"
-            android:gravity="start|center_vertical"
-            android:textSize="40px"
-            android:textColor="@android:color/white"
-            android:text="@string/condition_isSpeedZero"
-            android:drawableLeft="@drawable/condition_false"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@android:color/white"
+                android:text="@string/condition_isIgniteAccOn"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/dialog_update_condition_isParkBrake"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="30px"
-            android:gravity="start|center_vertical"
-            android:textSize="40px"
-            android:textColor="@android:color/white"
-            android:text="@string/condition_isParkBrake"
-            android:drawableLeft="@drawable/condition_false"/>
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_update_condition_isSpeedZero"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
 
-        <TextView
-            android:id="@+id/dialog_update_condition_isGearPark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="30px"
-            android:gravity="start|center_vertical"
-            android:textSize="40px"
-            android:textColor="@android:color/white"
-            android:text="@string/condition_isGearPark"
-            android:drawableLeft="@drawable/condition_false"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@android:color/white"
+                android:text="@string/condition_isSpeedZero"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/dialog_update_condition_isEngineOff"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="30px"
-            android:gravity="start|center_vertical"
-            android:textSize="40px"
-            android:textColor="@android:color/white"
-            android:text="@string/condition_isEngineOff"
-            android:drawableLeft="@drawable/condition_false"/>
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_update_condition_isParkBrake"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
 
-        <TextView
-            android:id="@+id/dialog_update_condition_isBatteryOk"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@android:color/white"
+                android:text="@string/condition_isParkBrake"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="30px"
-            android:gravity="start|center_vertical"
-            android:textSize="40px"
-            android:textColor="@android:color/white"
-            android:text="@string/condition_isBatteryOk"
-            android:drawableLeft="@drawable/condition_false"
-            android:visibility="gone"/>
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_update_condition_isGearPark"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@android:color/white"
+                android:text="@string/condition_isGearPark"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_update_condition_isEngineOff"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@android:color/white"
+                android:text="@string/condition_isEngineOff"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/dialog_update_condition_isBatteryOk"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@android:color/white"
+                android:text="@string/condition_isBatteryOk"/>
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
@@ -103,14 +174,18 @@
         android:textColor="#0054ff"
         android:text="@string/update_warning"
         android:gravity="center"
-        android:layout_marginTop="34px"/>
+        android:layout_marginTop="34px"
+        android:textSize="30px"/>
 
     <Button
         android:id="@+id/dialog_update_condition_cancel"
         android:layout_width="260px"
         android:layout_height="80px"
         android:layout_marginTop="22px"
+        android:layout_marginBottom="38px"
         android:layout_gravity="center"
+        android:textSize="32px"
+        android:textColor="#21365e"
         android:background="@drawable/selector_button"
         android:text="@string/update_cancel"/>
 </LinearLayout>

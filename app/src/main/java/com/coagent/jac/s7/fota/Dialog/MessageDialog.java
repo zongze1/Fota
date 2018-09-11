@@ -99,11 +99,14 @@ public class MessageDialog extends BaseDialog implements View.OnClickListener {
         if (positiveBtn != null && negativeBtn != null) {
             switch (buttonNum) {
                 case 2:
+                    positiveBtn.setVisibility(View.VISIBLE);
+                    negativeBtn.setVisibility(View.VISIBLE);
                     setCancelable(false);
                     break;
                 case 1:
                     setCancelable(false);
                     positiveBtn.setVisibility(View.GONE);
+                    negativeBtn.setVisibility(View.VISIBLE);
                     break;
                 case 0:
                     setCancelable(true);

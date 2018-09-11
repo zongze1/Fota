@@ -1,9 +1,9 @@
 package com.coagent.jac.s7.fota.Dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.widget.TextView;
 
 import com.coagent.jac.s7.fota.R;
@@ -27,6 +27,8 @@ public class ErrorDialog extends BaseDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_update_error);
+        window.setLayout(1550, 600);
+        window.setGravity(Gravity.TOP|Gravity.CENTER_VERTICAL);
         errorCodeTv = (TextView) findViewById(R.id.dialog_update_error_code);
         setErrorCode(errorCode);
     }

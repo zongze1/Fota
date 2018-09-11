@@ -2,9 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="1430px"
     android:layout_height="600px"
+    android:layout_marginLeft="120px"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/dialog_update_notitle"
-    android:theme="@style/UpdateDialogTheme" >
+    android:theme="@style/UpdateDialogTheme">
 
     <ImageView
         android:id="@+id/dialog_update_progress_close"
