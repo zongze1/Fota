@@ -15,6 +15,7 @@ public class MessageDialog extends BaseDialog implements View.OnClickListener {
     private TextView contentTv;
     private Button positiveBtn;
     private Button negativeBtn;
+    private ImageView closeBtn;
 
     private int buttonNum;
     private String title;
@@ -47,7 +48,7 @@ public class MessageDialog extends BaseDialog implements View.OnClickListener {
         positiveBtn.setOnClickListener(this);
         negativeBtn.setOnClickListener(this);
 
-        ImageView closeBtn = (ImageView) findViewById(R.id.dialog_update_message_close);
+        closeBtn = (ImageView) findViewById(R.id.dialog_update_message_close);
         closeBtn.setOnClickListener(this);
 
         setTitle(title);
@@ -115,6 +116,14 @@ public class MessageDialog extends BaseDialog implements View.OnClickListener {
                     break;
             }
         }
+        return this;
+    }
+
+    public MessageDialog changeCancelable(boolean flag) {
+        if (closeBtn != null) {
+            closeBtn.setVisibility(flag ? View.VISIBLE : View.GONE);
+        }
+        super.setCancelable(flag);
         return this;
     }
 

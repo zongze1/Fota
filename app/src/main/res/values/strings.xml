@@ -45,4 +45,5 @@
     <string name="condition_isEngineOff">发动机转速&#060;1000r/min</string>
     <string name="condition_isBatteryOk">电量充足</string>
     <string name="check_version">checkVersion</string>
+    <string name="get_free_space">get free space</string>
 </resources>

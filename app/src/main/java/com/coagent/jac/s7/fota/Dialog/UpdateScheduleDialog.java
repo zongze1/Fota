@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class UpdateScheduleDialog extends BaseDialog implements TimePicker.OnTimePickerListener {
-    private static final String INIT_TIME = "00~00";
+    private static final String INIT_TIME = "00:00~02:00";
     private TimePicker timePicker;
     private TextView timeTv;
     private Button button;
@@ -49,6 +49,9 @@ public class UpdateScheduleDialog extends BaseDialog implements TimePicker.OnTim
 
         timeTv.setText(INIT_TIME);
         timePicker.setListener(this);
+        calendar = Calendar.getInstance(Locale.CHINA);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,8 +73,6 @@ public class UpdateScheduleDialog extends BaseDialog implements TimePicker.OnTim
     @Override
     public void onSelected(int hour, int min) {
         // 当选择的时间比当前时间要早，则为次日
-
-        calendar = Calendar.getInstance(Locale.CHINA);
         String startTime, endTime;
         int currentHour = calendar.get(Calendar.HOUR);
         if (currentHour > hour) {

@@ -122,6 +122,7 @@ public class FotaService extends Service {
     }
 
     private void installPackage(final String filePath) {
+        Log.d(TAG, "安装包下载成功，包地址为: " + filePath);
         // 直接开线程解压就行了，因为这里不允许有任何用户操作干预
         new Thread(new Runnable() {
             @Override
@@ -132,21 +133,27 @@ public class FotaService extends Service {
                 List<File> files;
                 try {
                     files = Utils.unzipFile(zipFile, dir);
+                    StringBuilder builder = new StringBuilder();
+                    for (File file : files) {
+                        builder.append(" 文件: ")
+                                .append(file.getName());
+                    }
+                    Log.d(TAG, "解压完成" + builder.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                     files = new ArrayList<File>();
                 }
                 // 遍历识别update.zip文件名的升级包
-                File updateFile = null;
-                for (File file : files) {
-                    if (file.getName().equals("update.zip")) {
-                        updateFile = file;
-                        break;
-                    }
-                }
-                if (updateFile != null) {
-                    UpdateManager.getInstance().updateOS(updateFile.getAbsolutePath());
-                }
+//                File updateFile = null;
+//                for (File file : files) {
+//                    if (file.getName().equals("update.zip")) {
+//                        updateFile = file;
+//                        break;
+//                    }
+//                }
+//                if (updateFile != null) {
+//                    UpdateManager.getInstance().updateOS(updateFile.getAbsolutePath());
+//                }
             }
         }).start();
     }
@@ -215,7 +222,6 @@ public class FotaService extends Service {
 //                return;
 //            }
 
-            Log.d(TAG, "条款与说明: " + versionInfo.releaseNote);
             loadingDialog.dismiss();
             handler.post(new Runnable() {
                 @Override
@@ -226,6 +232,7 @@ public class FotaService extends Service {
                     messageDialog.setTitle(getString(R.string.check_version_title))
                             .setContent(getString(R.string.check_version_content))
                             .setButtonCount(2)
+                            .changeCancelable(true)
                             .setPositiveText(getString(R.string.update_now))
                             .setNegativeText(getString(R.string.update_schedule))
                             .setListener(newVersionListener)
@@ -233,6 +240,7 @@ public class FotaService extends Service {
                     // 预先填充条款对话框的说明
                     createNoteDialog();
                     noteDialog.setContent(versionInfo.releaseNote);
+                    Log.d(TAG, "条款与说明: " + versionInfo.releaseNote);
                 }
             });
             SPUtils.getInstance().put(SP_UPDATE_TASK_ID, versionInfo.taskId);
@@ -282,6 +290,7 @@ public class FotaService extends Service {
                                 .show();
                     }
                 });
+                Log.d(TAG, "开始下载");
                 FotaTask.instance().download();
             }
 
@@ -320,6 +329,7 @@ public class FotaService extends Service {
             public void schedule(long timeMillis) {
                 Calendar calendar = Calendar.getInstance();
                 int seconds = (int) ((calendar.getTimeInMillis() - timeMillis) / 1000);
+                Log.d(TAG, "延后" + seconds + "秒升级");
                 FotaTask.instance().setDeferredUpgradePlan(seconds);
             }
         };
@@ -336,6 +346,7 @@ public class FotaService extends Service {
                                 .setContent(getString(R.string.cancel_download_content))
                                 .setPositiveText(getString(R.string.cancel_download))
                                 .setNegativeText(getString(R.string.continue_download))
+                                .changeCancelable(false)
                                 .setListener(cancelDownloadListener)
                                 .show();
                     }
@@ -363,6 +374,7 @@ public class FotaService extends Service {
                 messageDialog.dismiss();
                 // 退出下载，隐藏信息对话框及进度对话框
                 FotaTask.instance().downloadCancel();
+                Log.d(TAG, "取消下载");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -386,7 +398,6 @@ public class FotaService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d(TAG, "download complete, check condition");
                         // 点击"现在升级"按钮
                         // 通知fota检测车机是否符合安装条件
                         createConditionDialog();
@@ -395,6 +406,7 @@ public class FotaService extends Service {
                     }
                 });
                 FotaTask.instance().install();
+                Log.d(TAG, "下载完毕，检查安装条件");
             }
 
             @Override
@@ -416,6 +428,7 @@ public class FotaService extends Service {
                     progress = downloadInfo.currentNum / (float) downloadInfo.countNum;
                     progress *= downloadInfo.nowBytes / (float) downloadInfo.totalBytes;
                     progressDialog.setProgress(progress);
+                    Log.d(TAG, "当前包: " + downloadInfo.currentNum + " 包总个数: " + downloadInfo.countNum + " 当前包已保存: " + downloadInfo.savedBytes + " 当前包总大小: " + downloadInfo.totalBytes + " 总进度: " + progress);
                 }
             });
         }
@@ -423,17 +436,22 @@ public class FotaService extends Service {
         @Override
         public void onInstallCondition(InstallCondition installCondition) {
             conditionDialog.dismiss();
+            Log.d(TAG, installCondition.toString());
             // 先检测电量，若不通过，显示错误信息框
             if (!installCondition.isBatteryOk) {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        if (messageDialog.isShowing()) {
+                            return;
+                        }
                         createMessageDialog();
                         messageDialog.setTitle("")
                                 .setContent(getString(R.string.no_power))
+                                .changeCancelable(false)
                                 .setButtonCount(1)
                                 .setNegativeText(getString(R.string.confirm))
-                                .setListener(messageDialogListener)
+                                .setListener(commonMessageDialogListener)
                                 .show();
                     }
                 });
@@ -481,22 +499,23 @@ public class FotaService extends Service {
 
         @Override
         public void onError(final ErrorInfo errorInfo) {
-            Log.d(TAG, "something error" + String.valueOf(errorInfo.errCode));
+            Log.d(TAG, "发生错误，错误码: " + errorInfo.errCode + " 错误信息: " + errorInfo.desc);
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     createMessageDialog();
                     messageDialog.setTitle("")
                             .setContent(errorInfo.desc)
+                            .changeCancelable(true)
                             .setButtonCount(1)
                             .setNegativeText(getString(R.string.confirm))
-                            .setListener(messageDialogListener)
+                            .setListener(commonMessageDialogListener)
                             .show();
                 }
             });
         }
 
-        private UpdateDialogListener messageDialogListener = new UpdateDialogListener() {
+        private UpdateDialogListener commonMessageDialogListener = new UpdateDialogListener() {
             @Override
             public void onPositiveClick() {
 
@@ -533,7 +552,8 @@ public class FotaService extends Service {
         public int getTargetFreeSpace(EcuId.EcuEnum ecuEnum) {
             String targetDir = getTargetDir();
             File dir = new File(targetDir);
-            return (int) dir.getFreeSpace();
+            // 转换为kb为单位
+            return (int) (dir.getFreeSpace() / 1024);
         }
 
         // 硬件版本
@@ -598,6 +618,7 @@ public class FotaService extends Service {
             createMessageDialog();
             messageDialog.setTitle("")
                     .setContent(getString(R.string.update_success))
+                    .changeCancelable(false)
                     .setButtonCount(0)
                     .show();
         }
@@ -622,6 +643,7 @@ public class FotaService extends Service {
             createMessageDialog();
             messageDialog.setTitle("")
                     .setContent(getString(R.string.update_failed))
+                    .changeCancelable(true)
                     .setButtonCount(0)
                     .show();
         }

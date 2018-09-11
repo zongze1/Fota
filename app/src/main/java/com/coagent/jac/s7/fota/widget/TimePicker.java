@@ -82,7 +82,6 @@ public class TimePicker extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawGrid(canvas);
-        Log.d("TimePicker", getTop() + " " + getBottom() + " " + getHeight());
 
         int textSize;
         String text;
