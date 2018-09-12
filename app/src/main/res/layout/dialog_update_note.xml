@@ -62,6 +62,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="35px"
         android:layout_marginLeft="210px"
+        android:layout_marginRight="210px"
         android:layout_marginBottom="35px"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

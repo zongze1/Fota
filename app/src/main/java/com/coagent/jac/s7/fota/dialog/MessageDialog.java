@@ -17,16 +17,16 @@ public class MessageDialog extends BaseDialog implements View.OnClickListener {
     private Button negativeBtn;
     private ImageView closeBtn;
 
-    private int buttonNum;
-    private String title;
-    private String content;
-    private String positiveStr;
-    private String negativeStr;
+    private int buttonNum = 0;
+    private String title = "";
+    private String content = "";
+    private String positiveStr = "";
+    private String negativeStr = "";
 
     private UpdateDialogListener listener;
 
-    public MessageDialog(@NonNull Context context, String content) {
-        this(context, "", content, 1);
+    public MessageDialog(@NonNull Context context) {
+        this(context, "", "", 1);
     }
 
     public MessageDialog(@NonNull Context context, String title, String content, int num) {

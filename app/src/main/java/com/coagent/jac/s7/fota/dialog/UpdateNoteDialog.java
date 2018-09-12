@@ -47,9 +47,9 @@ public class UpdateNoteDialog extends BaseDialog implements View.OnClickListener
         agreeBtn = (Button) findViewById(R.id.dialog_update_note_positive_btn);
         disagreeBtn = (Button) findViewById(R.id.dialog_update_note_negative_btn);
 
+        contentTv.setText(content);
         agreeBtn.setOnClickListener(this);
         disagreeBtn.setOnClickListener(this);
-        setContent(content);
     }
 
     @Override

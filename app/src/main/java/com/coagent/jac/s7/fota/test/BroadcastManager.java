@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 public class BroadcastManager {
-    private static final String BROADCAST_LOG = "com.kanade.fotademo.broadcast_log";
+    private static final String BROADCAST_LOG = "com.coagent.jac.s7.fota.broadcast_log";
     private static final String ARG_LOG = "arg_log";
 
     public static void registerBroadcast(Context context, BroadcastReceiver receiver) {

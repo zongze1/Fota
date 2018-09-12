@@ -23,6 +23,12 @@
             android:text="@string/no_ui_mode_btn"
             android:onClick="turnOnNormalMode"/>
 
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="@string/clear_list"
+            android:onClick="clearList"/>
+
         <TextView
             android:id="@+id/mode"
             android:layout_width="wrap_content"

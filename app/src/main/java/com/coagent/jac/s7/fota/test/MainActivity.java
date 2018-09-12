@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "Fota";
+    private static final String TAG = "====Fota====";
     /**
      * 保存当前模式，0 => 普通模式，1 => UI模式，重复点击同一个模式切换按钮则是重连操作
      */
@@ -73,9 +73,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, FotaService.class);
         stopService(intent);
         modeTv = (TextView) findViewById(R.id.mode);
-        modeTv.setTag(0);
-        // 默认启动非UI模式
-        turnOnNormalMode(null);
+        modeTv.setTag(1);
+        // 默认启动UI模式
+        turnOnUiMode(null);
+    }
+
+    public void clearList(View view) {
+        adapter.setNewData(new ArrayList<String>());
     }
 
     public void turnOnNormalMode(View view) {
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             FotaTask.instance().destroy();
         } else {
             Intent intent = new Intent(this, FotaService.class);
-            stopService(intent);
+            startService(intent);
         }
         modeTv.setTag(0);
         modeTv.setText(R.string.no_ui_mode);
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         Integer mode = (Integer) modeTv.getTag();
         if (mode == 1) {
             // 重连
-            Intent intent = new Intent(this, FotaService.class);
+            Intent intent = FotaService.newInstance(this, 1);
             stopService(intent);
             startService(intent);
         } else {
@@ -187,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String log = BroadcastManager.getLog(intent);
+            Log.d(TAG, log);
             adapter.addData(log);
         }
     };

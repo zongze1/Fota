@@ -10,17 +10,18 @@ import com.coagent.jac.s7.fota.R;
 
 public class ErrorDialog extends BaseDialog {
     private TextView errorCodeTv;
-    private String errorCode = "";
+    private String errorCode = "错误码: ";
 
     public ErrorDialog(@NonNull Context context) {
         super(context);
     }
 
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
+    public ErrorDialog setErrorCode(String errorCode) {
+        this.errorCode = "错误码: " + errorCode;
         if (errorCodeTv != null) {
             errorCodeTv.setText(errorCode);
         }
+        return this;
     }
 
     @Override
@@ -30,6 +31,6 @@ public class ErrorDialog extends BaseDialog {
         window.setLayout(1550, 600);
         window.setGravity(Gravity.TOP|Gravity.CENTER_VERTICAL);
         errorCodeTv = (TextView) findViewById(R.id.dialog_update_error_code);
-        setErrorCode(errorCode);
+        errorCodeTv.setText(errorCode);
     }
 }

@@ -4,6 +4,7 @@
     <!-- test -->
     <string name="ui_mode_btn">切换UI模式</string>
     <string name="no_ui_mode_btn">切换普通模式</string>
+    <string name="clear_list">清空日志</string>
     <string name="ui_mode">后台服务已启动，点击check version按钮，将由后台服务检测版本，并以弹框的方式呈现</string>
     <string name="no_ui_mode">后台服务已关闭，点击按钮测试每一个步骤</string>
 

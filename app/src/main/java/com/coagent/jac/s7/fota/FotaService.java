@@ -20,6 +20,7 @@ import com.abupdate.iov.task.FotaTask;
 import com.abupdate.iov.task.GlobalInter;
 import com.abupdate.iov.task.Sysi;
 import com.coagent.jac.s7.fota.dialog.ConditionDialog;
+import com.coagent.jac.s7.fota.dialog.ErrorDialog;
 import com.coagent.jac.s7.fota.dialog.MessageDialog;
 import com.coagent.jac.s7.fota.dialog.ProgressDialog;
 import com.coagent.jac.s7.fota.dialog.ProgressListener;
@@ -65,6 +66,8 @@ public class FotaService extends Service {
     private UpdateWarningDialog warningDialog;
     // 升级前条件检测对话框
     private ConditionDialog conditionDialog;
+    // 错误码对话框
+    private ErrorDialog errorDialog;
 
     /**
      * 由于jni回调在子线程，无法显示对话框，因此通过handler post到主线程处理
@@ -74,7 +77,7 @@ public class FotaService extends Service {
     /**
      * 启动升级服务
      *
-     * @param type 0 => 正常启动服务并检测版本，但不强制弹出升级对话框
+     * @param type 0 => 正常启动服务，不主动检测版本
      *             1 => 启动后执行check version，当收到新版本时强制弹出对话框
      */
     public static Intent newInstance(Context context, int type) {
@@ -95,17 +98,11 @@ public class FotaService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int type = intent.getIntExtra(ARG_TYPE, 0);
-        switch (type) {
-            case 0:
-                FotaTask.instance().checkVersion();
-                BroadcastManager.sendLogBroadcast(this, "检测版本");
-                break;
-            case 1:
-                // 清空任务id记录，当有新版本来到时强制弹出对话框
-                SPUtils.getInstance().put(SP_UPDATE_TASK_ID, "");
-                FotaTask.instance().checkVersion();
-                BroadcastManager.sendLogBroadcast(this, "检测版本");
-                break;
+        if (type == 1) {
+            // 清空任务id记录，当有新版本来到时强制弹出对话框
+            SPUtils.getInstance().put(SP_UPDATE_TASK_ID, "");
+            FotaTask.instance().checkVersion();
+            BroadcastManager.sendLogBroadcast(this, "检测版本");
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -204,7 +201,7 @@ public class FotaService extends Service {
 
     private void createMessageDialog() {
         if (messageDialog == null) {
-            messageDialog = new MessageDialog(this, "");
+            messageDialog = new MessageDialog(this);
         } else {
             messageDialog.dismiss();
         }
@@ -231,6 +228,14 @@ public class FotaService extends Service {
             conditionDialog = new ConditionDialog(this, handler);
         } else {
             conditionDialog.dismiss();
+        }
+    }
+
+    private void createErrorDialog() {
+        if (errorDialog == null) {
+            errorDialog = new ErrorDialog(this);
+        } else {
+            errorDialog.dismiss();
         }
     }
 
@@ -531,13 +536,8 @@ public class FotaService extends Service {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    createMessageDialog();
-                    messageDialog.setTitle("")
-                            .setContent(errorInfo.desc)
-                            .changeCancelable(true)
-                            .setButtonCount(1)
-                            .setNegativeText(getString(R.string.confirm))
-                            .setListener(commonMessageDialogListener)
+                    createErrorDialog();
+                    errorDialog.setErrorCode(String.valueOf(errorInfo.errCode))
                             .show();
                 }
             });
