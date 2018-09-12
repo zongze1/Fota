@@ -2,12 +2,137 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <Button
-        android:layout_width="180dp"
-        android:layout_height="70dp"
-        android:text="@string/check_version"
-        android:onClick="checkVersion"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/ui_mode_btn"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="@string/ui_mode_btn"
+            android:onClick="turnOnUiMode"/>
+
+        <Button
+            android:id="@+id/no_ui_mode_btn"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="@string/no_ui_mode_btn"
+            android:onClick="turnOnNormalMode"/>
+
+        <TextView
+            android:id="@+id/mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap">
+        <Button
+            android:id="@+id/ui_mode_check_version"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/check_version"
+            android:textAllCaps="false"
+            android:onClick="ui_mode_checkVersion" />
+
+        <Button
+            android:id="@+id/no_ui_mode_check_version"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/check_version"
+            android:textAllCaps="false"
+            android:onClick="no_ui_mode_checkVersion"/>
+
+        <Button
+            android:id="@+id/download"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/download"
+            android:textAllCaps="false"
+            android:onClick="download" />
+
+        <Button
+            android:id="@+id/download_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/download_cancel"
+            android:textAllCaps="false"
+            android:onClick="downloadCancel" />
+
+        <Button
+            android:id="@+id/install"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/install"
+            android:textAllCaps="false"
+            android:onClick="install" />
+
+        <Button
+            android:id="@+id/set_deferred_upgrade_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/set_deferred_upgrade_plan"
+            android:textAllCaps="false"
+            android:onClick="setDeferredUpgradePlan" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap">
+        <Button
+            android:id="@+id/get_state"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/get_state"
+            android:textAllCaps="false"
+            android:onClick="getState" />
+
+        <Button
+            android:id="@+id/get_local_version_info"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/get_local_version_info"
+            android:textAllCaps="false"
+            android:onClick="getLocalVersionInfo" />
+
+        <Button
+            android:id="@+id/get_SDK_version"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/get_SDK_version"
+            android:textAllCaps="false"
+            android:onClick="getSDKVersion" />
+
+        <Button
+            android:id="@+id/get_version_info"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/get_version_info"
+            android:textAllCaps="false"
+            android:onClick="getVersionInfo" />
+
+        <Button
+            android:id="@+id/get_ECU_name"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/get_ECU_name"
+            android:textAllCaps="false"
+            android:onClick="getECUName" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

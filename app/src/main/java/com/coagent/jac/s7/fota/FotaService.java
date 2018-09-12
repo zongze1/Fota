@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.abupdate.iov.Constant.EcuId;
 import com.abupdate.iov.event.info.DownloadInfo;
@@ -20,16 +19,16 @@ import com.abupdate.iov.event.info.VersionInfo;
 import com.abupdate.iov.task.FotaTask;
 import com.abupdate.iov.task.GlobalInter;
 import com.abupdate.iov.task.Sysi;
-import com.coagent.jac.s7.fota.Dialog.ConditionDialog;
-import com.coagent.jac.s7.fota.Dialog.LoadingDialog;
-import com.coagent.jac.s7.fota.Dialog.MessageDialog;
-import com.coagent.jac.s7.fota.Dialog.ProgressDialog;
-import com.coagent.jac.s7.fota.Dialog.ProgressListener;
-import com.coagent.jac.s7.fota.Dialog.ScheduleListener;
-import com.coagent.jac.s7.fota.Dialog.UpdateDialogListener;
-import com.coagent.jac.s7.fota.Dialog.UpdateNoteDialog;
-import com.coagent.jac.s7.fota.Dialog.UpdateScheduleDialog;
-import com.coagent.jac.s7.fota.Dialog.UpdateWarningDialog;
+import com.coagent.jac.s7.fota.dialog.ConditionDialog;
+import com.coagent.jac.s7.fota.dialog.MessageDialog;
+import com.coagent.jac.s7.fota.dialog.ProgressDialog;
+import com.coagent.jac.s7.fota.dialog.ProgressListener;
+import com.coagent.jac.s7.fota.dialog.ScheduleListener;
+import com.coagent.jac.s7.fota.dialog.UpdateDialogListener;
+import com.coagent.jac.s7.fota.dialog.UpdateNoteDialog;
+import com.coagent.jac.s7.fota.dialog.UpdateScheduleDialog;
+import com.coagent.jac.s7.fota.dialog.UpdateWarningDialog;
+import com.coagent.jac.s7.fota.test.BroadcastManager;
 import com.coagent.proxy.update.UpdateManager;
 
 import java.io.File;
@@ -46,8 +45,6 @@ import java.util.Locale;
  * 由于各个对话框之间相互耦合，暂时未作优化
  */
 public class FotaService extends Service {
-    private static final String TAG = "FotaService";
-
     private static final String ARG_TYPE = "arg_type";
     /**
      * 记录升级的id，当收到新版本通知时保存任务id到本地
@@ -68,15 +65,17 @@ public class FotaService extends Service {
     private UpdateWarningDialog warningDialog;
     // 升级前条件检测对话框
     private ConditionDialog conditionDialog;
-    private LoadingDialog loadingDialog;
 
+    /**
+     * 由于jni回调在子线程，无法显示对话框，因此通过handler post到主线程处理
+     */
     private Handler handler = new Handler();
 
     /**
      * 启动升级服务
      *
-     * @param type 0 => 正常启动，启动后不执行任何操作
-     *             1 => 启动后执行checkVersion
+     * @param type 0 => 正常启动服务并检测版本，但不强制弹出升级对话框
+     *             1 => 启动后执行check version，当收到新版本时强制弹出对话框
      */
     public static Intent newInstance(Context context, int type) {
         Intent intent = new Intent(context, FotaService.class);
@@ -90,15 +89,23 @@ public class FotaService extends Service {
         FotaTask.instance().create(sysi, sessionCallback);
         FotaTask.instance().registerListener(globalInter);
         UpdateManager.getInstance().addUpdateListener(updateListener);
+        BroadcastManager.sendLogBroadcast(this, "升级服务启动成功");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int type = intent.getIntExtra(ARG_TYPE, 0);
-        if (type == 1) {
-            createLoadingDialog();
-            loadingDialog.show();
-            FotaTask.instance().checkVersion();
+        switch (type) {
+            case 0:
+                FotaTask.instance().checkVersion();
+                BroadcastManager.sendLogBroadcast(this, "检测版本");
+                break;
+            case 1:
+                // 清空任务id记录，当有新版本来到时强制弹出对话框
+                SPUtils.getInstance().put(SP_UPDATE_TASK_ID, "");
+                FotaTask.instance().checkVersion();
+                BroadcastManager.sendLogBroadcast(this, "检测版本");
+                break;
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -108,6 +115,7 @@ public class FotaService extends Service {
         super.onDestroy();
         FotaTask.instance().destroy();
         UpdateManager.getInstance().removeUpdateListener(updateListener);
+        BroadcastManager.sendLogBroadcast(this, "升级服务已关闭");
     }
 
     @Nullable
@@ -116,14 +124,14 @@ public class FotaService extends Service {
         return null;
     }
 
-    // 获取Tbox传输过来文件要存档的目录，从root目录开始
+    // 获取tBox传输过来文件要存档的目录，从root目录开始
     private String getTargetDir() {
         return File.separator + "sdcard" + File.separator;
     }
 
     private void installPackage(final String filePath) {
-        Log.d(TAG, "安装包下载成功，包地址为: " + filePath);
-        // 直接开线程解压就行了，因为这里不允许有任何用户操作干预
+        BroadcastManager.sendLogBroadcast(this, "安装包下载成功，包地址为: " + filePath);
+        // 直接开线程解压，这里不允许有任何用户操作干预
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -138,22 +146,42 @@ public class FotaService extends Service {
                         builder.append(" 文件: ")
                                 .append(file.getName());
                     }
-                    Log.d(TAG, "解压完成" + builder.toString());
+                    BroadcastManager.sendLogBroadcast(getApplicationContext(), "解压完成" + builder.toString());
                 } catch (IOException e) {
+                    // TODO 解压出错，发出错误通知
                     e.printStackTrace();
                     files = new ArrayList<File>();
                 }
                 // 遍历识别update.zip文件名的升级包
-//                File updateFile = null;
-//                for (File file : files) {
-//                    if (file.getName().equals("update.zip")) {
-//                        updateFile = file;
-//                        break;
-//                    }
-//                }
-//                if (updateFile != null) {
-//                    UpdateManager.getInstance().updateOS(updateFile.getAbsolutePath());
-//                }
+                File updateFile = null;
+                for (File file : files) {
+                    if (file.getName().equals("update.zip")) {
+                        updateFile = file;
+                        break;
+                    }
+                }
+                if (updateFile != null) {
+                    final File update = updateFile;
+                    // 最后确认是否需要安装(仅作测试用)
+                    createMessageDialog();
+                    messageDialog.setTitle("最后通牒")
+                            .setContent("是否真的确认升级?")
+                            .changeCancelable(false)
+                            .setButtonCount(2)
+                            .setPositiveText(getString(R.string.confirm))
+                            .setNegativeText(getString(R.string.update_cancel))
+                            .setListener(new UpdateDialogListener() {
+                                @Override
+                                public void onPositiveClick() {
+                                    UpdateManager.getInstance().updateOS(update.getAbsolutePath());
+                                }
+
+                                @Override
+                                public void onNegativeClick() {
+                                    messageDialog.dismiss();
+                                }
+                            });
+                }
             }
         }).start();
     }
@@ -206,23 +234,17 @@ public class FotaService extends Service {
         }
     }
 
-    private void createLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(this);
-        } else {
-            loadingDialog.dismiss();
-        }
-    }
-
     private GlobalInter globalInter = new GlobalInter() {
         @Override
         public void onNewVersion(final VersionInfo versionInfo) {
-//            String dstVer = SPUtils.getInstance().getString(SP_UPDATE_TASK_ID);
-//            if (dstVer.equals(versionInfo.taskId)) {
-//                return;
-//            }
+            BroadcastManager.sendLogBroadcast(getApplicationContext(), "检测到新版本: " + versionInfo.toString());
+            // 检测当前版本升级通知的任务id是否与本地相同，若相同则不弹出对话框
+            String dstVer = SPUtils.getInstance().getString(SP_UPDATE_TASK_ID);
+            if (dstVer.equals(versionInfo.taskId)) {
+                BroadcastManager.sendLogBroadcast(getApplicationContext(), "当前版本与此前记录相同，不弹出用户提示框");
+                return;
+            }
 
-            loadingDialog.dismiss();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -240,7 +262,6 @@ public class FotaService extends Service {
                     // 预先填充条款对话框的说明
                     createNoteDialog();
                     noteDialog.setContent(versionInfo.releaseNote);
-                    Log.d(TAG, "条款与说明: " + versionInfo.releaseNote);
                 }
             });
             SPUtils.getInstance().put(SP_UPDATE_TASK_ID, versionInfo.taskId);
@@ -290,7 +311,7 @@ public class FotaService extends Service {
                                 .show();
                     }
                 });
-                Log.d(TAG, "开始下载");
+                BroadcastManager.sendLogBroadcast(getApplicationContext(), "开始下载升级包");
                 FotaTask.instance().download();
             }
 
@@ -298,6 +319,7 @@ public class FotaService extends Service {
             public void onNegativeClick() {
                 noteDialog.dismiss();
                 // TODO 通知Launcher显示待升级图标
+                BroadcastManager.sendLogBroadcast(getApplicationContext(), "条款不通过，将在任务栏显示待升级图标");
             }
         };
 
@@ -321,6 +343,7 @@ public class FotaService extends Service {
             public void onNegativeClick() {
                 noteDialog.dismiss();
                 // TODO 通知Launcher显示待升级图标
+                BroadcastManager.sendLogBroadcast(getApplicationContext(), "条款不通过，将在任务栏显示待升级图标");
             }
         };
 
@@ -329,8 +352,9 @@ public class FotaService extends Service {
             public void schedule(long timeMillis) {
                 Calendar calendar = Calendar.getInstance();
                 int seconds = (int) ((calendar.getTimeInMillis() - timeMillis) / 1000);
-                Log.d(TAG, "延后" + seconds + "秒升级");
+                BroadcastManager.sendLogBroadcast(getApplicationContext(), "延后" + seconds + "秒升级");
                 FotaTask.instance().setDeferredUpgradePlan(seconds);
+                scheduleDialog.dismiss();
             }
         };
 
@@ -359,6 +383,7 @@ public class FotaService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        BroadcastManager.sendLogBroadcast(getApplicationContext(), "升级包下载成功");
                         // 下载完成，弹出安装前提示
                         createUpdateWarningDialog();
                         warningDialog.setListener(downloadCompleteListener)
@@ -374,7 +399,7 @@ public class FotaService extends Service {
                 messageDialog.dismiss();
                 // 退出下载，隐藏信息对话框及进度对话框
                 FotaTask.instance().downloadCancel();
-                Log.d(TAG, "取消下载");
+                BroadcastManager.sendLogBroadcast(getApplicationContext(), "取消下载升级包");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -405,14 +430,15 @@ public class FotaService extends Service {
                                 .show();
                     }
                 });
+                BroadcastManager.sendLogBroadcast(getApplicationContext(), "检测车机是否满足安装条件");
                 FotaTask.instance().install();
-                Log.d(TAG, "下载完毕，检查安装条件");
             }
 
             @Override
             public void onNegativeClick() {
                 warningDialog.dismiss();
                 // TODO 通知Launcher显示待升级图标
+                BroadcastManager.sendLogBroadcast(getApplicationContext(), "条款不通过，将在任务栏显示待升级图标");
             }
         };
 
@@ -428,7 +454,9 @@ public class FotaService extends Service {
                     progress = downloadInfo.currentNum / (float) downloadInfo.countNum;
                     progress *= downloadInfo.nowBytes / (float) downloadInfo.totalBytes;
                     progressDialog.setProgress(progress);
-                    Log.d(TAG, "当前包: " + downloadInfo.currentNum + " 包总个数: " + downloadInfo.countNum + " 当前包已保存: " + downloadInfo.savedBytes + " 当前包总大小: " + downloadInfo.totalBytes + " 总进度: " + progress);
+                    if ((progress % 0.1) == 0) {
+                        BroadcastManager.sendLogBroadcast(getApplicationContext(), "当前包: " + downloadInfo.currentNum + " 包总个数: " + downloadInfo.countNum + " 当前包已保存: " + downloadInfo.savedBytes + " 当前包总大小: " + downloadInfo.totalBytes + " 总进度: " + progress);
+                    }
                 }
             });
         }
@@ -436,7 +464,7 @@ public class FotaService extends Service {
         @Override
         public void onInstallCondition(InstallCondition installCondition) {
             conditionDialog.dismiss();
-            Log.d(TAG, installCondition.toString());
+            BroadcastManager.sendLogBroadcast(getApplicationContext(), "安装检测条件结果: " + installCondition.toString());
             // 先检测电量，若不通过，显示错误信息框
             if (!installCondition.isBatteryOk) {
                 handler.post(new Runnable() {
@@ -499,7 +527,7 @@ public class FotaService extends Service {
 
         @Override
         public void onError(final ErrorInfo errorInfo) {
-            Log.d(TAG, "发生错误，错误码: " + errorInfo.errCode + " 错误信息: " + errorInfo.desc);
+            BroadcastManager.sendLogBroadcast(getApplicationContext(), "发生错误，错误码: " + errorInfo.errCode + " 错误信息: " + errorInfo.desc);
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -614,6 +642,7 @@ public class FotaService extends Service {
 
         @Override
         public void updateEnd(int i) {
+            BroadcastManager.sendLogBroadcast(getApplicationContext(), "升级完毕，即将重启");
             progressDialog.dismiss();
             createMessageDialog();
             messageDialog.setTitle("")
@@ -640,6 +669,7 @@ public class FotaService extends Service {
 
         @Override
         public void updateError(int i, int i1, int i2, int i3, int i4) {
+            BroadcastManager.sendLogBroadcast(getApplicationContext(), "升级出错");
             createMessageDialog();
             messageDialog.setTitle("")
                     .setContent(getString(R.string.update_failed))

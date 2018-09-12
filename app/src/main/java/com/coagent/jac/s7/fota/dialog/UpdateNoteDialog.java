@@ -1,4 +1,4 @@
-package com.coagent.jac.s7.fota.Dialog;
+package com.coagent.jac.s7.fota.dialog;
 
 import android.content.Context;
 import android.os.Bundle;

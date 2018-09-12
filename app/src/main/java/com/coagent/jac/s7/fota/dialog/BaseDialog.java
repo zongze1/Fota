@@ -1,14 +1,12 @@
-package com.coagent.jac.s7.fota.Dialog;
+package com.coagent.jac.s7.fota.dialog;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 

@@ -1,4 +1,4 @@
-package com.coagent.jac.s7.fota.Dialog;
+package com.coagent.jac.s7.fota.dialog;
 
 public interface ProgressListener {
     void onCancel();

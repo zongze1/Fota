@@ -1,6 +1,25 @@
 <resources>
     <string name="app_name">fota</string>
 
+    <!-- test -->
+    <string name="ui_mode_btn">切换UI模式</string>
+    <string name="no_ui_mode_btn">切换普通模式</string>
+    <string name="ui_mode">后台服务已启动，点击check version按钮，将由后台服务检测版本，并以弹框的方式呈现</string>
+    <string name="no_ui_mode">后台服务已关闭，点击按钮测试每一个步骤</string>
+
+    <string name="check_version">check version</string>
+    <string name="download">download</string>
+    <string name="download_cancel">cancel download</string>
+    <string name="install">install</string>
+    <string name="set_deferred_upgrade_plan">set deferred upgrade plan： 10seconds</string>
+
+    <string name="get_state">get state</string>
+    <string name="get_local_version_info">get local version info</string>
+    <string name="get_SDK_version">get SDK version</string>
+    <string name="get_version_info">get version info</string>
+    <string name="get_ECU_name">get ECU name</string>
+    <!-- test -->
+
     <string name="confirm">确定</string>
     <string name="agree">同意</string>
     <string name="disagree">不同意</string>
@@ -44,6 +63,4 @@
     <string name="condition_isGearPark">EPB电子手刹拉起</string>
     <string name="condition_isEngineOff">发动机转速&#060;1000r/min</string>
     <string name="condition_isBatteryOk">电量充足</string>
-    <string name="check_version">checkVersion</string>
-    <string name="get_free_space">get free space</string>
 </resources>
