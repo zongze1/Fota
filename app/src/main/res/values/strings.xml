@@ -1,56 +1,74 @@
 <resources>
-    <string name="app_name">fota</string>
+    <string name="app_name">在线升级</string>
+    <string name="activity_title">在线升级</string>
+    <string name="activity_content">提醒:\n有两种升级方式: 1、【现在升级】方式: 在车辆点火状态下由用户手动完成升级，升级过程中\n需要确保点火开关ON，发动机未启动，车辆静止，档位处于驻车档或空档，手刹拉起。\n2、【预定时间】升级方式: 用户可以选择不用车的时间段，由系统自动完成升级，升级过程中\n需要确保车辆熄火，档位处于驻车档或者空档，手刹拉起，系统自动升级期间，用户可以放心锁\n车离开。</string>
+    <string name="latest_version_content">当前软件已是最新版本</string>
+    <string name="new_version_content">存在新的软件版本</string>
+    <string name="update_manual"><u>手动检测</u></string>
+    <string name="update_button">升级</string>
 
-    <!-- test -->
-    <string name="ui_mode_btn">切换UI模式</string>
-    <string name="no_ui_mode_btn">切换普通模式</string>
-    <string name="clear_list">清空日志</string>
-    <string name="ui_mode">后台服务已启动，点击check version按钮，将由后台服务检测版本，并以弹框的方式呈现</string>
-    <string name="no_ui_mode">后台服务已关闭，点击按钮测试每一个步骤</string>
-
-    <string name="check_version">check version</string>
-    <string name="download">download</string>
-    <string name="download_cancel">cancel download</string>
-    <string name="install">install</string>
-    <string name="set_deferred_upgrade_plan">set deferred upgrade plan： 10seconds</string>
-
-    <string name="get_state">get state</string>
-    <string name="get_local_version_info">get local version info</string>
-    <string name="get_SDK_version">get SDK version</string>
-    <string name="get_version_info">get version info</string>
-    <string name="get_ECU_name">get ECU name</string>
-    <!-- test -->
-
+    <string name="latest_version">已是最新版本</string>
     <string name="confirm">确定</string>
     <string name="agree">同意</string>
     <string name="disagree">不同意</string>
+    <string name="update_check">正在检测新版本</string>
     <string name="update_condition">检测升级条件…</string>
     <string name="downloading">下载中…</string>
     <string name="installing">软件更新中，请勿进行任何操作!</string>
     <string name="cancel_download_content">是否退出下载?</string>
     <string name="cancel_download">退出下载</string>
     <string name="continue_download">继续下载</string>
-    <string name="update_note_title">条款与说明</string>
     <string name="no_power">蓄电池电量不足，请充满电后重试</string>
     <string name="update_cancel">取消升级</string>
     <string name="update_now">现在升级</string>
     <string name="update_warning">升级条件不满足，请根据上述条件调整车辆状态</string>
     <string name="update_schedule">预定时间</string>
+    <string name="update_OS">OS升级中</string>
+    <string name="update_MCU">MCU升级中</string>
     <string name="check_version_title">软件升级</string>
     <string name="check_version_content">检测到新软件版本\n您可以预定时间或者现在升级</string>
+
+    <string name="update_note_title">条款与说明</string>
+    <string name="update_note_new_feature_title">新功能</string>
+    <string name="update_note_new_feature_content">版本信息与升级内容: 升级说明</string>
+    <string name="update_note_condition_title">升级条件</string>
+    <string name="update_note_condition_content">请保持车辆状态满足以下升级条件: 点火开关为ON; 发动机未启动; 车辆静止; 档\n位处于驻车档或空档; 手刹拉起。</string>
+    <string name="update_notes_title">重要须知</string>
+    <string name="update_notes_content">在您使用OTA系统更新前，请您务必仔细阅读并透彻理解本声明。如果您使用系统，您的使用行为将被视为对本声明全部内容的认可。
+用户须明白，OTA系统更新仅依其当前所呈现的状况提供，服务涉及到互联网及移动通讯等服务，可能会受到各个环节不稳定因素的影响。因此服务可能存在因黑客攻击，电脑病毒的侵入，非法内容信息、骚扰信息的屏蔽，政府管制以及其他任何互联网络、GSM网络、通信线路、信息安全管理措施等原因造成的服务中断、受阻等不可抗力或其他原因造成的服务中断或不能满足用户要求的风险。使用OTA系统更新的用户须承担以上风险，OTA系统更新对服务之及时性、安全性、准确性不做担保，对因此导致用户不能正常使用功能或其他问题不承担任何责任。
+如OTA更新系统后的系统发生故障影响到所提供服务的正常运行，江淮汽车承诺在第一时间内与相关单位配合，及时处理进行修复。但用户因此而产生的经济损失，本公司不承担责任。
+升级过程中请确保车辆处于静止状态，以免危害您的生命和财产安全。江淮汽车不承担任何因操作不当造成的损失与责任。升级过程中如遇到问题，您可联系江淮汽车客服或前往您附近的4S店。
+　　OTA系统升级服务保护所有使用车辆用户的个人隐私，江淮汽车不会主动向第三方披露。
+本次升级前，请了解以下事项：
+1、需要收集您的设备基本信息，为您推送适合于此设备的软件版本；
+2、系统OTA升级与车辆的无线网络环境有密切的关系，网络状态的不稳定，将会导致升级的失败，或终止。
+3、系统OTA升级异常后，将有可能影响您车辆驾驶的正常功能，升级过程中如遇到问题，请前往您附近的4S店。
+</string>
+
+    <string name="update_info_title">升级说明</string>
+    <string name="update_info_src_version">当前版本: %s</string>
+    <string name="update_info_dst_version">新版本: %s</string>
+    <string name="update_info_back">返回</string>
 
     <string name="update_warning_title">提示</string>
     <string name="update_warning_content1">本次升级大约需要</string>
     <string name="update_warning_content2">分钟，您是否现在升级?</string>
-    <string name="update_warning_content3">升级过程中可能会出现车辆自动熄火重启的情况，请您耐心等候!</string>
+    <string name="update_warning_content3">升级过程中可能会出现车辆自动熄火重启; 仪表部分指示灯点亮; MP5\n自动息屏; 空调自动开启等属于正常现象。请您耐心等待! </string>
     <string name="update_later">下次再说</string>
 
     <string name="update_success">升级成功，系统自动重启</string>
     <string name="update_failed">升级失败，请重新升级</string>
-
-    <string name="update_error_title">错误</string>
+    <string name="update_disclaimer">免责声明: 升级过程中请勿进行任何操作、以免危害您的生命和财产安全。安徽江淮汽车集团股份\n有限公司不承担任何因操作不当造成的损失与责任。升级过程中如遇到问题，你可以联系江淮汽车\n客服或者前往附近的4S店。</string>
+    <string name="update_error_title">故障</string>
     <string name="update_error_content">请勿驾驶车辆，联系4S店处理!</string>
-    
+
+    <string name="update_result_success_title">升级成功</string>
+    <string name="update_result_success_content">请将车辆熄火，并等待1分钟后\n重新启动车辆。</string>
+
+    <string name="update_result_failed_title">升级失败</string>
+    <string name="update_result_failed_content">请将车辆熄火，并等待1分钟后重新启动车辆。</string>
+    <string name="update_result_failed_warning">重新启动车辆后可再次尝试升级或者联系4S店处理</string>
+
     <string name="setting_update_time">设置升级时间</string>
     <string name="setting_update_start_time">设置开始时间</string>
     <string name="setting_update_warning">升级过程中请保持车辆熄火，档位处于&#034;驻车&#034;模式，手刹为拉起状态。</string>
@@ -58,10 +76,10 @@
     <string name="setting_update_des">时间内自动升级</string>
     <string name="setting_update_btn">设置此时间</string>
 
-    <string name="condition_isIgniteAccOn">点火开关on</string>
-    <string name="condition_isSpeedZero">车速为0</string>
-    <string name="condition_isParkBrake">档位为N档</string>
-    <string name="condition_isGearPark">EPB电子手刹拉起</string>
-    <string name="condition_isEngineOff">发动机转速&#060;1000r/min</string>
-    <string name="condition_isBatteryOk">电量充足</string>
+    <string name="condition_isIgniteAccOn">点火开关为on</string>
+    <string name="condition_isSpeedZero">车辆静止</string>
+    <string name="condition_isGearPark">档位处于驻车档或空档</string>
+    <string name="condition_isParkBrake">手刹拉起</string>
+    <string name="condition_isEngineOff">发动机未启动</string>
+    <string name="condition_isBatteryOk">蓄电池电量充足</string>
 </resources>

@@ -3,4 +3,27 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="top_view">#171d22</color>
+    <color name="activity_title">#ffffff</color>
+    <color name="activity_content">#ffffff</color>
+    <color name="activity_update_left_content">#2a74b9</color>
+    <color name="activity_update_right_content">#ff9000</color>
+    <color name="activity_update_disabled">#525760</color>
+
+    <color name="timer_picker_mid_text">#ff9000</color>
+    <color name="timer_picker_normal_text">#ffffff</color>
+    <color name="timer_picker_line">#ffffff</color>
+
+    <color name="progress_border">#bfc1c4</color>
+    <color name="progress_left_panel">#2788e5</color>
+    <color name="progress_right_panel">#909295</color>
+
+    <color name="update_item_decoration">#0a0d10</color>
+    <color name="update_note_click_text">#ff9000</color>
+    <color name="divider_line">#0a0d10</color>
+    <color name="dialog_message">@android:color/white</color>
+    <color name="dialog_warning_message">#ff0000</color>
+    <color name="dialog_button_pressed">#3aa0ff</color>
+    <color name="dialog_button_normal">@android:color/white</color>
 </resources>

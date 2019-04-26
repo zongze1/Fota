@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1430px"
+    android:layout_height="600px"
+    android:layout_marginLeft="120px"
+    android:orientation="vertical"
+    android:theme="@style/UpdateDialogTheme"
+    android:background="@drawable/dialog_update_no_title">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="36px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100px"
+        android:textColor="@color/dialog_warning_message"
+        android:text="@string/update_result_failed_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="36px"
+        android:layout_marginTop="140px"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/update_result_failed_content"
+        android:textColor="@color/dialog_message"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/warning"
+        android:drawablePadding="20px"
+        android:text="@string/update_result_failed_warning"
+        android:textSize="30px"
+        android:gravity="bottom"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginTop="150px"
+        android:textColor="@color/dialog_message"/>
+</LinearLayout>

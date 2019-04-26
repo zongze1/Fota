@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 public final class SPUtils {
-    private static final SimpleArrayMap<String, SPUtils> SP_UTILS_MAP = new SimpleArrayMap<String, SPUtils>();
+    private static final SimpleArrayMap<String, SPUtils> SP_UTILS_MAP = new SimpleArrayMap<>();
     private SharedPreferences sp;
 
     /**
@@ -415,6 +415,14 @@ public final class SPUtils {
         } else {
             sp.edit().clear().apply();
         }
+    }
+
+    public void registerOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        sp.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    public void unregisterOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        sp.unregisterOnSharedPreferenceChangeListener(listener);
     }
 
     private static boolean isSpace(final String s) {

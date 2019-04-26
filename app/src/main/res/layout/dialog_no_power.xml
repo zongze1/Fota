@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="750px"
+    android:layout_height="390px"
+    android:layout_marginLeft="120px"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/UpdateDialogTheme"
+    android:background="@drawable/dialog_update_no_title">
+
+    <ImageView
+        android:id="@+id/dialog_no_power_close"
+        android:layout_width="80px"
+        android:layout_height="80px"
+        android:layout_marginTop="15px"
+        android:layout_marginLeft="20px"
+        android:scaleType="fitCenter"
+        android:background="@drawable/selector_delete"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/dialog_no_power_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/no_power"
+        android:layout_marginTop="80px"
+        android:gravity="center"
+        android:textSize="@dimen/common_font"
+        android:textColor="@color/dialog_message"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="64px"
+        android:layout_marginBottom="40px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_no_power_content">
+        <Button
+            android:id="@+id/dialog_no_power_negative_btn"
+            android:layout_width="200px"
+            android:layout_height="80px"
+            android:gravity="center"
+            android:textSize="@dimen/common_font"
+            android:textColor="@drawable/selector_button_text_click"
+            android:background="@drawable/selector_button_click"
+            android:text="@string/confirm"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

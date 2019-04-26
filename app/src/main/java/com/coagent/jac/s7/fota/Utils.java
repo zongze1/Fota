@@ -5,6 +5,7 @@ import android.content.Context;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,33 +19,17 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class Utils {
+    public static final String TAG = "FotaService";
+
     private static final int BUFFER_LEN = 8192;
     public static Context context;
 
     public static void init(Context context) {
-        Utils.context = context;
+        Utils.context = context.getApplicationContext();
     }
 
-    public static boolean copyFile(final String srcFilePath,
-                                   final String destFilePath) {
-        return copyFile(getFileByPath(srcFilePath), getFileByPath(destFilePath));
-    }
-
-    public static boolean copyFile(final String srcFilePath,
-                                   final String destFilePath,
-                                   final OnReplaceListener listener) {
-        return copyFile(getFileByPath(srcFilePath), getFileByPath(destFilePath), listener);
-    }
-
-    public static boolean copyFile(final File srcFile,
-                                   final File destFile) {
-        return copyOrMoveFile(srcFile, destFile, false);
-    }
-
-    public static boolean copyFile(final File srcFile,
-                                   final File destFile,
-                                   final OnReplaceListener listener) {
-        return copyOrMoveFile(srcFile, destFile, listener, false);
+    public static void release() {
+        Utils.context = null;
     }
 
     public static List<File> unzipFile(final File zipFile,
@@ -119,6 +104,26 @@ public class Utils {
         return true;
     }
 
+    public static boolean copyDir(final File srcDir, final File destDir) {
+        if (srcDir == null || destDir == null) return false;
+        // destDir's path locate in srcDir's path then return false
+        String srcPath = srcDir.getPath() + File.separator;
+        String destPath = destDir.getPath() + File.separator;
+        if (destPath.contains(srcPath)) return false;
+        if (!srcDir.exists() || !srcDir.isDirectory()) return false;
+        if (!createOrExistsDir(destDir)) return false;
+        File[] files = srcDir.listFiles();
+        for (File file : files) {
+            File oneDestFile = new File(destPath + file.getName());
+            if (file.isFile()) {
+                if (!copyOrMoveFile(file, oneDestFile, () -> true, false)) return false;
+            } else if (file.isDirectory()) {
+                if (!copyDir(file, oneDestFile)) return false;
+            }
+        }
+        return true;
+    }
+
     private static boolean createOrExistsFile(final File file) {
         if (file == null) return false;
         if (file.exists()) return file.isFile();
@@ -129,17 +134,6 @@ public class Utils {
             e.printStackTrace();
             return false;
         }
-    }
-
-    private static boolean copyOrMoveFile(final File srcFile,
-                                          final File destFile,
-                                          final boolean isMove) {
-        return copyOrMoveFile(srcFile, destFile, new OnReplaceListener() {
-            @Override
-            public boolean onReplace() {
-                return true;
-            }
-        }, isMove);
     }
 
     private static boolean copyOrMoveFile(final File srcFile,
@@ -184,6 +178,13 @@ public class Utils {
         return true;
     }
 
+    public static String getFileExtension(final String filePath) {
+        if (isSpace(filePath)) return "";
+        int lastPoi = filePath.lastIndexOf('.');
+        int lastSep = filePath.lastIndexOf(File.separator);
+        if (lastPoi == -1 || lastSep >= lastPoi) return "";
+        return filePath.substring(lastPoi + 1);
+    }
 
     public static boolean createOrExistsDir(final File file) {
         return file != null && (file.exists() ? file.isDirectory() : file.mkdirs());
@@ -191,6 +192,53 @@ public class Utils {
 
     public static boolean deleteFile(final File file) {
         return file != null && (!file.exists() || file.isFile() && file.delete());
+    }
+
+    public static boolean deleteDir(final File dir) {
+        if (dir == null) return false;
+        // dir doesn't exist then return true
+        if (!dir.exists()) return true;
+        // dir isn't a directory then return false
+        if (!dir.isDirectory()) return false;
+        File[] files = dir.listFiles();
+        if (files != null && files.length != 0) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    if (!file.delete()) return false;
+                } else if (file.isDirectory()) {
+                    if (!deleteDir(file)) return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
+
+    public static boolean isDir(final File file) {
+        return file != null && file.exists() && file.isDirectory();
+    }
+
+    public static List<File> listFilesInDir(final File dir, final boolean isRecursive) {
+        return listFilesInDirWithFilter(dir, pathname -> true, isRecursive);
+    }
+
+    public static List<File> listFilesInDirWithFilter(final File dir,
+                                                      final FileFilter filter,
+                                                      final boolean isRecursive) {
+        if (!isDir(dir)) return null;
+        List<File> list = new ArrayList<File>();
+        File[] files = dir.listFiles();
+        if (files != null && files.length != 0) {
+            for (File file : files) {
+                if (filter.accept(file)) {
+                    list.add(file);
+                }
+                if (isRecursive && file.isDirectory()) {
+                    //noinspection ConstantConditions
+                    list.addAll(listFilesInDirWithFilter(file, filter, true));
+                }
+            }
+        }
+        return list;
     }
 
     private static boolean writeFileFromIS(final File file,

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="750px"
+    android:layout_height="390px"
+    android:layout_marginLeft="120px"
+    android:theme="@style/UpdateDialogTheme"
+    android:background="@drawable/dialog_update_no_title">
+    <TextView
+        android:id="@+id/dialog_success_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/common_font"
+        android:textColor="@color/dialog_message"
+        android:layout_marginTop="40px"
+        android:text="@string/update_result_success_title"
+        android:gravity="center"
+        android:layout_gravity="top|center_horizontal"/>
+
+    <TextView
+        android:id="@+id/dialog_success_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="34px"
+        android:textColor="@color/dialog_message"
+        android:layout_gravity="center"
+        android:text="@string/update_result_success_content"/>
+</FrameLayout>

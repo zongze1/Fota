@@ -2,15 +2,18 @@ package com.coagent.jac.s7.fota.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 
-public class ProgressView extends View {
+import com.coagent.jac.s7.fota.R;
+
+import skin.support.content.res.SkinCompatResources;
+import skin.support.widget.SkinCompatView;
+
+public class ProgressView extends SkinCompatView {
     private static final int STROKE_SIZE = 1;
     private static final float RADIUS = 10;
     private Path path;
@@ -36,18 +39,18 @@ public class ProgressView extends View {
 
     private void init() {
         borderPaint = new Paint();
-        borderPaint.setColor(Color.parseColor("#bfc1c4"));
+        borderPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.progress_border));
         borderPaint.setAntiAlias(true);
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setStrokeWidth(STROKE_SIZE);
 
         leftPaint = new Paint();
-        leftPaint.setColor(Color.parseColor("#25c151"));
+        leftPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.progress_left_panel));
         leftPaint.setAntiAlias(true);
         leftPaint.setStyle(Paint.Style.FILL);
 
         rightPaint = new Paint();
-        rightPaint.setColor(Color.parseColor("#909295"));
+        rightPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.progress_right_panel));
         rightPaint.setAntiAlias(true);
         rightPaint.setStyle(Paint.Style.FILL);
     }
@@ -76,5 +79,14 @@ public class ProgressView extends View {
         int left = (int) (width * progress);
         canvas.drawRect(STROKE_SIZE, STROKE_SIZE, left, getHeight() - STROKE_SIZE, leftPaint);
         canvas.drawRect(left, STROKE_SIZE, getWidth() - STROKE_SIZE, getHeight() - STROKE_SIZE, rightPaint);
+    }
+
+    @Override
+    public void applySkin() {
+        super.applySkin();
+        borderPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.progress_border));
+        leftPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.progress_left_panel));
+        rightPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.progress_right_panel));
+        postInvalidate();
     }
 }

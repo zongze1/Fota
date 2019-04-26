@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1430px"
+    android:layout_height="600px"
+    android:layout_marginLeft="120px"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/UpdateDialogTheme"
+    android:background="@drawable/dialog_update_no_title">
+
+    <TextView
+        android:id="@+id/dialog_note_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60px"
+        android:gravity="center"
+        android:text="@string/update_note_title"
+        android:textColor="@color/dialog_message"
+        android:textSize="@dimen/common_font"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/dialog_note_ll"
+        android:layout_width="0dp"
+        android:layout_height="160px"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <Button
+            android:id="@+id/dialog_note_positive_btn"
+            android:layout_width="200px"
+            android:layout_height="80px"
+            android:layout_marginRight="280px"
+            android:gravity="center"
+            android:text="@string/agree"
+            android:textSize="@dimen/common_font"
+            android:textColor="@drawable/selector_button_text_click"
+            android:background="@drawable/selector_button_click"/>
+
+        <Button
+            android:id="@+id/dialog_note_negative_btn"
+            android:layout_width="200px"
+            android:layout_height="80px"
+            android:gravity="center"
+            android:text="@string/disagree"
+            android:textSize="@dimen/common_font"
+            android:textColor="@drawable/selector_button_text_click"
+            android:background="@drawable/selector_button_click"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="1400px"
+        android:layout_height="1px"
+        android:background="@color/divider_line"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dialog_note_ll" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="35px"
+        android:layout_marginLeft="210px"
+        android:layout_marginRight="210px"
+        android:layout_marginBottom="35px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dialog_note_ll"
+        app:layout_constraintTop_toBottomOf="@id/dialog_note_title">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:textSize="28px"
+                android:textColor="@color/dialog_message"
+                android:textStyle="bold"
+                android:text="@string/update_note_new_feature_title"/>
+
+            <TextView
+                android:id="@+id/dialog_note_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:textColor="@color/dialog_message"
+                android:textSize="28px" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:textSize="28px"
+                android:textStyle="bold"
+                android:layout_marginTop="40px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/update_note_condition_title"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:textSize="28px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/update_note_condition_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:textSize="28px"
+                android:layout_marginTop="40px"
+                android:textStyle="bold"
+                android:textColor="@color/dialog_message"
+                android:text="@string/update_notes_title"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:textSize="28px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/update_notes_content"/>
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

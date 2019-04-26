@@ -1,0 +1,22 @@
+{
+
+	"SAVE_FILE" :{
+		"switch" :"off",
+		"address":"./fota.log"
+	},
+
+	"LOG": {
+		"FOTA": {
+			"level": 0
+		},
+
+		"SO": {
+			"level": 0
+		},
+
+
+		"HU": {
+			"level": 0
+		}
+	}
+}

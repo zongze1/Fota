@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="75px">
+
+    <TextView
+        android:id="@+id/rv_item_update_info_ecu_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32px"
+        android:textColor="@color/dialog_message"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginLeft="95px"/>
+
+    <TextView
+        android:id="@+id/rv_item_update_info_src_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32px"
+        android:textColor="@color/dialog_message"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/rv_item_update_info_dst_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:textSize="32px"
+        android:textColor="@color/dialog_message"
+        android:layout_marginRight="110px"/>
+</FrameLayout>

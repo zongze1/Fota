@@ -3,17 +3,19 @@ package com.coagent.jac.s7.fota.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
+
+import com.coagent.jac.s7.fota.R;
 
 import java.text.DecimalFormat;
 
-public class TimePicker extends View {
+import skin.support.content.res.SkinCompatResources;
+import skin.support.widget.SkinCompatView;
+
+public class TimePicker extends SkinCompatView {
     private static final int MID_TEXT_SIZE = 32;
     private static final int NORMAL_TEXT_SIZE = 22;
 
@@ -60,18 +62,18 @@ public class TimePicker extends View {
         midPaint = new Paint();
         midPaint.setAntiAlias(true);
         midPaint.setTextSize(MID_TEXT_SIZE);
-        midPaint.setColor(Color.parseColor("#0054ff"));
+        midPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.timer_picker_mid_text));
 
         normalPaint = new Paint();
         normalPaint.setAntiAlias(true);
         normalPaint.setTextSize(NORMAL_TEXT_SIZE);
-        normalPaint.setColor(Color.WHITE);
+        normalPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.timer_picker_normal_text));
 
         linePaint = new Paint();
         linePaint.setAntiAlias(true);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(1);
-        linePaint.setColor(Color.WHITE);
+        linePaint.setColor(SkinCompatResources.getColor(getContext(), R.color.timer_picker_line));
     }
 
     public void setListener(OnTimePickerListener listener) {
@@ -97,7 +99,7 @@ public class TimePicker extends View {
             textWidth = normalPaint.measureText(text);
             startX = getColumnMiddle(1, gridWidth, textWidth);
             gridMiddle = getRowMiddle(i + 3, gridHeight);
-            // 中间一格蓝色
+            // 中间一格不同颜色
             if (i == 0) {
                 canvas.drawText(text, startX, gridMiddle + hourOffset + MID_TEXT_SIZE / 2, midPaint);
             } else {
@@ -115,7 +117,7 @@ public class TimePicker extends View {
             textWidth = normalPaint.measureText(text);
             startX = getColumnMiddle(2, gridWidth, textWidth);
             gridMiddle = getRowMiddle(i + 3, gridHeight);
-            // 中间一格蓝色
+            // 中间一格不同颜色
             if (i == 0) {
                 canvas.drawText(text, startX, gridMiddle + minOffset + MID_TEXT_SIZE / 2, midPaint);
             } else {
@@ -250,6 +252,15 @@ public class TimePicker extends View {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void applySkin() {
+        super.applySkin();
+        midPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.timer_picker_mid_text));
+        normalPaint.setColor(SkinCompatResources.getColor(getContext(), R.color.timer_picker_normal_text));
+        linePaint.setColor(SkinCompatResources.getColor(getContext(), R.color.timer_picker_line));
+        postInvalidate();
     }
 
     public interface OnTimePickerListener {

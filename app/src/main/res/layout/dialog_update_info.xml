@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1430px"
+    android:layout_height="600px"
+    android:layout_marginLeft="120px"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_update_no_title"
+    android:theme="@style/UpdateDialogTheme" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="32px"
+        android:textColor="@color/dialog_message"
+        android:layout_marginTop="46px"
+        android:text="@string/update_info_title" />
+
+    <com.coagent.jac.s7.fota.widget.SkinRecyclerView
+        android:id="@+id/dialog_update_info_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="40px"
+        android:layout_marginBottom="60px" >
+    </com.coagent.jac.s7.fota.widget.SkinRecyclerView>
+
+    <Button
+        android:id="@+id/dialog_update_info_btn"
+        android:layout_width="200px"
+        android:layout_height="80px"
+        android:gravity="center"
+        android:textSize="@dimen/common_font"
+        android:textColor="@drawable/selector_button_text_click"
+        android:layout_marginBottom="40px"
+        android:background="@drawable/selector_button_click"
+        android:text="@string/update_info_back"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

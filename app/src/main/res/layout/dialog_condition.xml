@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1430px"
+    android:layout_height="600px"
+    android:layout_marginLeft="120px"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_update_no_title"
+    android:theme="@style/UpdateDialogTheme">
+
+    <TextView
+        android:id="@+id/dialog_condition_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100px"
+        android:textSize="36px"
+        android:gravity="center_horizontal"
+        android:textColor="@color/dialog_message"
+        android:text="@string/update_condition"/>
+
+    <LinearLayout
+        android:id="@+id/dialog_condition_ll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="40px"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_condition_isIgniteAccOn"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/condition_isIgniteAccOn"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_condition_isSpeedZero"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/condition_isSpeedZero"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_condition_isGearPark"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/condition_isGearPark"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_condition_isParkBrake"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/condition_isParkBrake"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_condition_isEngineOff"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/condition_isEngineOff"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="390px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/dialog_condition_isBatteryOk"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/condition_true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:textSize="30px"
+                android:layout_marginLeft="26px"
+                android:textColor="@color/dialog_message"
+                android:text="@string/condition_isBatteryOk"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dialog_condition_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="30px"
+        android:textColor="#0054ff"
+        android:text="@string/update_warning"
+        android:gravity="center"
+        android:layout_marginTop="34px"
+        android:textSize="30px"/>
+
+    <Button
+        android:id="@+id/dialog_condition_cancel"
+        android:layout_width="260px"
+        android:layout_height="80px"
+        android:layout_marginTop="22px"
+        android:layout_marginBottom="38px"
+        android:layout_gravity="center"
+        android:textSize="@dimen/common_font"
+        android:textColor="@drawable/selector_button_text_click"
+        android:background="@drawable/selector_button_click"
+        android:text="@string/update_cancel"
+        android:gravity="center"/>
+</LinearLayout>

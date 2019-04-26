@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1430px"
+    android:layout_height="600px"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginLeft="120px"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/dialog_update_no_title"
+    android:theme="@style/UpdateDialogTheme">
+
+    <TextView
+        android:id="@+id/dialog_install_progress_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="190px"
+        android:text="@string/installing"
+        android:textSize="40px"
+        android:textColor="@color/dialog_message"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.coagent.jac.s7.fota.widget.ProgressView
+        android:id="@+id/dialog_install_progress_pv"
+        android:layout_width="850px"
+        android:layout_height="50px"
+        android:layout_marginTop="60px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_install_progress_content"/>
+
+    <TextView
+        android:id="@+id/dialog_install_progress_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60px"
+        android:layout_marginLeft="44px"
+        android:textSize="26px"
+        android:textColor="@color/dialog_message"
+        tools:text="45%"
+        app:layout_constraintTop_toBottomOf="@id/dialog_install_progress_content"
+        app:layout_constraintLeft_toRightOf="@id/dialog_install_progress_pv"/>
+
+    <TextView
+        android:id="@+id/dialog_install_progress_ecu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32px"
+        android:textColor="@color/dialog_message"
+        tools:text="HU升级成功"
+        android:layout_marginBottom="14px"
+        app:layout_constraintLeft_toLeftOf="@id/dialog_install_progress_pv"
+        app:layout_constraintBottom_toTopOf="@id/dialog_install_progress_pv"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70px"
+        android:layout_marginRight="70px"
+        android:layout_marginBottom="30px"
+        android:textSize="30px"
+        android:textColor="@color/dialog_message"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_install_progress_pv"
+        android:text="@string/update_disclaimer"/>
+</android.support.constraint.ConstraintLayout>
