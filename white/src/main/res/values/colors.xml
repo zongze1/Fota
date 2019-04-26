@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="top_view">#c0c2c8</color>
+    <color name="activity_title">#21365e</color>
+    <color name="activity_content">#21365e</color>
+    <color name="activity_update_left_content">#21365e</color>
+    <color name="activity_update_right_content">#ff9000</color>
+    <color name="activity_update_disabled">#919191</color>
+
+    <color name="timer_picker_mid_text">#ff9000</color>
+    <color name="timer_picker_normal_text">#ffffff</color>
+    <color name="timer_picker_line">#ffffff</color>
+
+    <color name="progress_border">#bfc1c4</color>
+    <color name="progress_left_panel">#25c151</color>
+    <color name="progress_right_panel">#909295</color>
+
+    <color name="update_item_decoration">#ffffff</color>
+    <color name="update_note_click_text">#ff9000</color>
+    <color name="divider_line">#ffffff</color>
+    <color name="dialog_message">@android:color/white</color>
+    <color name="dialog_warning_message">#ff0000</color>
+    <color name="dialog_button_normal">@android:color/white</color>
+    <color name="dialog_button_pressed">#21365e</color>
+</resources>
